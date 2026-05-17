@@ -1,107 +1,77 @@
 "use client";
 
 import { useState } from "react";
-import { Lightbulb, Loader2 } from "lucide-react";
+import { Lightbulb, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 
 export default function AdminInsightsPage() {
-  const [insight, setInsight] = useState("");
+  const [insight, setInsight] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const heatmapData = [
-    { department: "Sales", Innovation: 10, Operations: 20, Customer: 5, Finance: 0, People: 2 },
-    { department: "Engineering", Innovation: 5, Operations: 10, Customer: 2, Finance: 0, People: 5 },
-    { department: "Finance", Innovation: 37, Operations: 5, Customer: 0, Finance: 2, People: 1 },
-    { department: "HR", Innovation: 12, Operations: 8, Customer: 1, Finance: 5, People: 4 },
-  ];
 
   const generateInsight = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/insights", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: heatmapData })
+      const response = await fetch('/api/insights', {
+        method: 'POST',
+        body: JSON.stringify({ 
+          data: { 
+            confidence_distribution: { high: 45, medium: 30, low: 25 },
+            overdue_goals: 12,
+            active_cycle: "FY 2025-26"
+          } 
+        }),
       });
-      const json = await res.json();
-      setInsight(json.recommendation || "Unable to generate insight at this time.");
-    } catch (err) {
-      setInsight("Error connecting to AI service. Ensure GROQ_API_KEY is set.");
+      const data = await response.json();
+      setInsight(data.recommendation);
+    } catch (error) {
+      toast.error("Failed to generate insights");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="max-w-[800px]">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h2 className="text-[24px] font-semibold text-primary">Confidence Map Insights</h2>
-          <p className="text-[14px] text-secondary mt-1">Identify areas where employees feel least confident about their goals.</p>
+          <h2 className="text-[24px] font-semibold text-primary">AI Business Insights</h2>
+          <p className="text-[14px] text-secondary mt-1">Get strategic recommendations based on org-wide data.</p>
         </div>
+        <button 
+          onClick={generateInsight}
+          className="enterprise-btn flex items-center gap-2"
+          disabled={loading}
+        >
+          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+          Generate Insight
+        </button>
       </div>
       
       <div className="h-[1px] bg-border w-full mb-8" />
 
-      <div className="enterprise-card mb-6">
-        <div className="mb-4">
-          <h3 className="text-[18px] font-semibold text-primary">Low Confidence Heatmap</h3>
-          <p className="text-[13px] text-secondary mt-1">Percentage of goals tagged as "Low Confidence" by department and thrust area.</p>
-        </div>
-        
-        <div className="enterprise-table-wrapper">
-          <table className="w-full text-center">
-            <thead>
-              <tr>
-                <th className="enterprise-table-th text-left border-r border-border">Department</th>
-                <th className="enterprise-table-th">Innovation</th>
-                <th className="enterprise-table-th">Operations</th>
-                <th className="enterprise-table-th">Customer</th>
-                <th className="enterprise-table-th">Finance</th>
-                <th className="enterprise-table-th">People</th>
-              </tr>
-            </thead>
-            <tbody>
-              {heatmapData.map((row, i) => (
-                <tr key={i} className="enterprise-table-tr">
-                  <td className="enterprise-table-td text-left font-medium border-r border-border">{row.department}</td>
-                  {['Innovation', 'Operations', 'Customer', 'Finance', 'People'].map(area => {
-                    const val = row[area];
-                    let bgClass = "bg-[var(--green-soft)] text-primary";
-                    if (val > 15) bgClass = "bg-[var(--amber-soft)] text-amber";
-                    if (val > 30) bgClass = "bg-[var(--red-soft)] text-red font-semibold";
-                    return (
-                      <td key={area} className={`enterprise-table-td font-mono ${bgClass}`}>
-                        {val}%
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="enterprise-card border-l-2 border-l-accent">
-        <div className="flex items-center gap-2 mb-4">
-          <Lightbulb size={18} className="text-accent" />
-          <h3 className="text-[16px] font-semibold text-primary">AI Recommendation</h3>
-        </div>
-        
-        {insight ? (
-          <p className="text-[14px] leading-relaxed text-primary bg-subtle p-4 rounded-md border border-border">
+      {insight ? (
+        <div className="enterprise-card border-accent bg-accent-soft/30 p-8">
+          <div className="flex items-center gap-3 mb-4 text-accent">
+            <Lightbulb className="w-6 h-6" />
+            <h3 className="text-[18px] font-semibold">Strategic Recommendation</h3>
+          </div>
+          <p className="text-[16px] text-primary leading-relaxed">
             {insight}
           </p>
-        ) : (
-          <div className="flex flex-col items-start gap-4">
-            <p className="text-[13px] text-secondary">Click below to generate an AI insight based on the current confidence heatmap.</p>
-            <button className="enterprise-btn flex items-center gap-2" onClick={generateInsight} disabled={loading}>
-              {loading && <Loader2 size={14} className="animate-spin" />}
-              Generate Insight
-            </button>
+          <div className="mt-6 pt-6 border-t border-accent-border flex gap-4">
+            <button className="enterprise-btn text-[13px] py-1.5 px-4">Create Initiative</button>
+            <button className="enterprise-btn-secondary text-[13px] py-1.5 px-4 rounded-[7px]">Share with Leaders</button>
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="enterprise-card flex flex-col items-center justify-center py-16 text-center">
+          <div className="w-16 h-16 rounded-full bg-subtle flex items-center justify-center mb-6">
+            <Lightbulb className="w-8 h-8 text-secondary" />
+          </div>
+          <h3 className="text-[18px] font-medium text-primary mb-2">No active insights</h3>
+          <p className="text-[14px] text-secondary max-w-[400px]">Click the button above to analyze current goal cycle data and generate AI-driven recommendations.</p>
+        </div>
+      )}
     </div>
   );
 }

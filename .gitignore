@@ -25,9 +25,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
-
+# Security: ignore all environment and secret files
+.env*
+*.pem
+*.key
+*.crt
 # vercel
 .vercel
 
