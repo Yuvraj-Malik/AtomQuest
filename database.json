@@ -1,0 +1,261 @@
+{
+  "profiles": [
+    {
+      "id": "admin-uuid-1111",
+      "role": "admin",
+      "name": "Admin Operations",
+      "email": "admin@demo.com",
+      "manager_id": null,
+      "designation": "Talent Operations Admin",
+      "location": "Mumbai, India",
+      "phone": "+91 98765 43210",
+      "bio": "Managing enterprise-wide performance and execution tracking since 2022.",
+      "tenure": "4 years",
+      "avatar": "SA"
+    },
+    {
+      "id": "manager-uuid-2222",
+      "role": "manager",
+      "name": "Rahul Sharma",
+      "email": "rahul@demo.com",
+      "manager_id": "admin-uuid-1111",
+      "designation": "Director of Product",
+      "department": "Product",
+      "location": "Pune, India",
+      "phone": "+91 98123 45678",
+      "bio": "Leading product design, analytics, and scaling efforts for core platforms.",
+      "tenure": "3 years",
+      "avatar": "RS"
+    },
+    {
+      "id": "manager-uuid-3333",
+      "role": "manager",
+      "name": "Shreya Mehta",
+      "email": "shreya@demo.com",
+      "manager_id": "admin-uuid-1111",
+      "designation": "Director of Engineering",
+      "department": "Engineering",
+      "location": "Bengaluru, India",
+      "phone": "+91 97654 32109",
+      "bio": "Driving technical architecture, quality engineering, and agile operations.",
+      "tenure": "5 years",
+      "avatar": "SM"
+    },
+    {
+      "id": "employee-uuid-4444",
+      "role": "employee",
+      "name": "Aryan Kumar",
+      "email": "aryan@demo.com",
+      "manager_id": "manager-uuid-2222",
+      "designation": "Product Designer",
+      "department": "Product",
+      "location": "Pune, India",
+      "phone": "+91 95555 12345",
+      "bio": "Creating premium glassmorphic components and elegant micro-interactions.",
+      "tenure": "2 years",
+      "avatar": "AK"
+    },
+    {
+      "id": "employee-uuid-5555",
+      "role": "employee",
+      "name": "Nisha Pillai",
+      "email": "nisha@demo.com",
+      "manager_id": "manager-uuid-2222",
+      "designation": "Product Specialist",
+      "department": "Product",
+      "location": "Pune, India",
+      "phone": "+91 94444 54321",
+      "bio": "Formulating go-to-market roadmaps and conducting competitive surveys.",
+      "tenure": "1 year",
+      "avatar": "NP"
+    },
+    {
+      "id": "employee-uuid-6666",
+      "role": "employee",
+      "name": "Vikram Singh",
+      "email": "vikram@demo.com",
+      "manager_id": "manager-uuid-2222",
+      "designation": "Product Analyst",
+      "department": "Product",
+      "location": "Pune, India",
+      "phone": "+91 93333 67890",
+      "bio": "Deriving user behavior patterns and setting performance analytics benchmarks.",
+      "tenure": "2 years",
+      "avatar": "VS"
+    },
+    {
+      "id": "employee-uuid-7777",
+      "role": "employee",
+      "name": "Meera Singh",
+      "email": "meera@demo.com",
+      "manager_id": "manager-uuid-3333",
+      "designation": "Frontend Developer",
+      "department": "Engineering",
+      "location": "Bengaluru, India",
+      "phone": "+91 92222 98765",
+      "bio": "Translating wireframes into responsive, state-managed Web interfaces.",
+      "tenure": "3 years",
+      "avatar": "MS"
+    },
+    {
+      "id": "employee-uuid-8888",
+      "role": "employee",
+      "name": "Aditya Rao",
+      "email": "aditya@demo.com",
+      "manager_id": "manager-uuid-3333",
+      "designation": "Backend Developer",
+      "department": "Engineering",
+      "location": "Bengaluru, India",
+      "phone": "+91 91111 24680",
+      "bio": "Designing highly scalable REST route handlers, DB APIs, and security models.",
+      "tenure": "2 years",
+      "avatar": "AR"
+    },
+    {
+      "id": "employee-uuid-9999",
+      "role": "employee",
+      "name": "Rohan Das",
+      "email": "rohan@demo.com",
+      "manager_id": "manager-uuid-3333",
+      "designation": "DevOps Engineer",
+      "department": "Engineering",
+      "location": "Bengaluru, India",
+      "phone": "+91 90000 13579",
+      "bio": "Managing CI/CD build scripts, server environments, and cloud infrastructure.",
+      "tenure": "3 years",
+      "avatar": "RD"
+    },
+    {
+      "id": "employee-uuid-1010",
+      "role": "employee",
+      "name": "Kirti Sen",
+      "email": "kirti@demo.com",
+      "manager_id": "manager-uuid-3333",
+      "designation": "QA Engineer",
+      "department": "Engineering",
+      "location": "Bengaluru, India",
+      "phone": "+91 89999 97531",
+      "bio": "Running automated E2E browser checks and validating system tolerances.",
+      "tenure": "1 year",
+      "avatar": "KS"
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal-uuid-1",
+      "employee_id": "employee-uuid-4444",
+      "title": "Complete Q1 design system specs",
+      "description": "Build out standard HSL color palettes and connected design tokens.",
+      "status": "submitted",
+      "weightage": 40,
+      "progress": 80,
+      "created_at": "2026-05-10T12:00:00Z"
+    },
+    {
+      "id": "goal-uuid-2",
+      "employee_id": "employee-uuid-4444",
+      "title": "Improve mobile loading speed",
+      "description": "Optimize high-resolution asset loading and responsive flex boxes.",
+      "status": "submitted",
+      "weightage": 30,
+      "progress": 50,
+      "created_at": "2026-05-11T12:00:00Z"
+    },
+    {
+      "id": "goal-uuid-3",
+      "employee_id": "employee-uuid-5555",
+      "title": "Formulate NPS feedback report",
+      "description": "Collect product review results from initial user trials.",
+      "status": "draft",
+      "weightage": 50,
+      "progress": 10,
+      "created_at": "2026-05-12T12:00:00Z"
+    },
+    {
+      "id": "goal-uuid-4",
+      "employee_id": "employee-uuid-7777",
+      "title": "Optimize landing page responsive layout",
+      "description": "Implement fluid CSS grid containers and custom animation keyframes.",
+      "status": "approved",
+      "weightage": 60,
+      "progress": 90,
+      "created_at": "2026-05-13T12:00:00Z"
+    }
+  ],
+  "escalations": [
+    {
+      "id": "esc-uuid-1",
+      "employee_id": "employee-uuid-4444",
+      "escalation_type": "approval_delayed",
+      "days_overdue": 7,
+      "resolved": true
+    },
+    {
+      "id": "esc-uuid-2",
+      "employee_id": "employee-uuid-5555",
+      "escalation_type": "goal_not_submitted",
+      "days_overdue": 5,
+      "resolved": true
+    }
+  ],
+  "cycles": [
+    {
+      "id": "cycle-uuid-1",
+      "name": "Q1 Performance Cycle",
+      "is_active": true,
+      "start_date": "2026-04-01",
+      "end_date": "2026-06-30"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "audit-uuid-1779091012820",
+      "time": "Just now",
+      "actor": "Admin",
+      "action": "Administratively bypassed and approved goals for **Aryan Kumar**",
+      "status": "Approved"
+    },
+    {
+      "id": "audit-uuid-1779090141877",
+      "time": "Just now",
+      "actor": "Admin Operations",
+      "action": "Updated profile fields (Name: Admin Operations, Location: Mumbai, India, Bio: Managing enterprise-...) for **Admin Operations**",
+      "status": "Modified"
+    },
+    {
+      "id": "audit-uuid-1779089787825",
+      "time": "Just now",
+      "actor": "Admin",
+      "action": "Dispatched compliance nudge to **Nisha Pillai** for overdue goal not submitted",
+      "status": "Nudged"
+    },
+    {
+      "id": "audit-uuid-1779089707617",
+      "time": "Just now",
+      "actor": "System Admin",
+      "action": "Updated profile fields (Name: Admin Operations, Location: Mumbai, India, Bio: Managing enterprise-...) for **System Admin**",
+      "status": "Modified"
+    },
+    {
+      "id": "audit-uuid-1",
+      "time": "11:42 today",
+      "actor": "Priya Nair",
+      "action": "Approved 6 goals for **Aryan Kumar** — Revenue & Efficiency tracks",
+      "status": "Approved"
+    },
+    {
+      "id": "audit-uuid-2",
+      "time": "10:15 today",
+      "actor": "Admin",
+      "action": "Unlocked goal #G-1042 for **Meera Singh** — target revised post lock",
+      "status": "Modified"
+    },
+    {
+      "id": "audit-uuid-3",
+      "time": "Yesterday",
+      "actor": "Raj Sharma",
+      "action": "Returned goals to **Nisha Pillai** — weightage validation error",
+      "status": "Returned"
+    }
+  ]
+}
