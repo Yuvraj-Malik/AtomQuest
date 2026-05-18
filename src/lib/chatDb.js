@@ -13,6 +13,15 @@ let sqlite = null;
 let db = null;
 let fallback = null;
 
+function loadBetterSqlite3() {
+  try {
+    const dynamicRequire = eval('require');
+    return dynamicRequire('better-sqlite3');
+  } catch (error) {
+    return null;
+  }
+}
+
 function now() {
   return new Date().toISOString();
 }
@@ -36,7 +45,10 @@ function persistFallback() {
 function tryInitSqlite() {
   if (db) return db;
   try {
-    sqlite = require('better-sqlite3');
+    sqlite = loadBetterSqlite3();
+    if (!sqlite) {
+      return null;
+    }
     db = new sqlite(dbPath);
 
     // Create tables if not exist

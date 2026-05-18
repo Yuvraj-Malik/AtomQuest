@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { downloadReport } from "@/lib/reportDownload";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -114,13 +115,36 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <TopBar 
-        title="Admin dashboard" 
-        subtitle={`${stats.activeCycleName} · ${stats.totalEmployees} employees active`} 
-        primaryAction={{ label: "Export report", onClick: () => toast.success("Exporting full achievement report...") }}
-      />
+      <TopBar />
       
-      <main className="content">
+      <main className="content space-y-6">
+        {/* Premium Hero Banner */}
+        <div className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(135deg,rgba(91,156,246,0.08),rgba(200,240,96,0.08),rgba(255,255,255,0.02))] p-6 relative overflow-hidden mb-6">
+          <div className="absolute inset-0 opacity-40 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(200,240,96,0.20),transparent_36%),radial-gradient(circle_at_bottom_left,rgba(91,156,246,0.15),transparent_32%)]" />
+          <div className="relative z-[1] flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text2)] mb-3">
+                <UserCheck className="w-3.5 h-3.5 text-[var(--accent)]" /> Admin operations center
+              </div>
+              <h2 className="text-[28px] font-semibold text-[var(--text1)] tracking-tight flex items-center gap-2">
+                <Activity className="w-7 h-7 text-[var(--accent)] shrink-0" />
+                Admin Dashboard
+              </h2>
+              <p className="text-[13.5px] text-[var(--text2)] mt-2 max-w-xl">
+                Track real-time goals compliance, monitor department completion rates, review active escalations, and audit system operations.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 items-center self-start lg:self-end">
+              <button 
+                onClick={() => downloadReport('/api/reports/export?report=performance&format=csv')}
+                className="enterprise-btn bg-[var(--accent)] text-[#0d0d0b] hover:bg-[var(--accent-dim)] font-semibold transition"
+              >
+                Export Report
+              </button>
+            </div>
+          </div>
+        </div>
         {/* Stats Row */}
         <div className="stats-row">
           <div className="stat">
@@ -247,8 +271,8 @@ export default function AdminDashboard() {
           <div className="card-header">
             <div className="card-title">Audit trail</div>
             <div className="flex gap-2">
-              <button className="tb-btn tb-btn-ghost text-[11.5px] px-3 py-1" onClick={() => toast.success('Exporting audit log as CSV...')}>Export CSV</button>
-              <button className="tb-btn tb-btn-ghost text-[11.5px] px-3 py-1" onClick={() => toast.success('Exporting achievement report...')}>Achievement report</button>
+              <button className="tb-btn tb-btn-ghost text-[11.5px] px-3 py-1" onClick={() => downloadReport('/api/reports/export?report=audit&format=csv')}>Export CSV</button>
+              <button className="tb-btn tb-btn-ghost text-[11.5px] px-3 py-1" onClick={() => downloadReport('/api/reports/export?report=performance&format=xls')}>Achievement report</button>
             </div>
           </div>
           <div className="max-h-[300px] overflow-y-auto">

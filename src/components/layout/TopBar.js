@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/lib/supabase";
 import { Bell, Check, X, Clock } from "lucide-react";
 import { useTheme } from 'next-themes';
 
@@ -12,57 +11,35 @@ export default function TopBar({ title, subtitle, primaryAction, secondaryAction
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    let channel;
+  const fetchLocalNotifications = async () => {
+    try {
+      const storedEmail = typeof window !== 'undefined' ? sessionStorage.getItem('aq_user_email') : null;
+      if (!storedEmail) return;
 
-    const init = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-
-        // Fetch existing notifications for user
-        const { data, error } = await supabase
-          .from('notifications')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(10);
-
-        if (!error && data) {
-          setNotifications(data);
-          setUnreadCount(data.filter(n => !n.is_read).length);
-        }
-
-        // Subscribe to new notifications
-        const channelName = `notifs-${user.id}-${Math.random().toString(36).substr(2, 9)}`;
-        channel = supabase
-          .channel(channelName)
-          .on(
-            'postgres_changes',
-            {
-              event: 'INSERT',
-              schema: 'public',
-              table: 'notifications',
-              filter: `user_id=eq.${user.id}`
-            },
-            (payload) => {
-              setNotifications(prev => [payload.new, ...prev].slice(0, 10));
-              setUnreadCount(prev => prev + 1);
-            }
-          )
-          .subscribe((status) => {
-            if (status === 'SUBSCRIBED') console.log('Realtime subscribed for notifications');
-          });
-      } catch (err) {
-        console.error('Notifications init error:', err);
+      const res = await fetch(`/api/notifications?email=${encodeURIComponent(storedEmail)}`);
+      if (res.ok) {
+        const data = await res.json();
+        const formatted = data.map(n => ({
+          id: n.id,
+          title: n.subject || 'Notification',
+          message: n.body || '',
+          is_read: n.is_read,
+          created_at: n.created_at || new Date().toISOString()
+        }));
+        setNotifications(formatted);
+        setUnreadCount(formatted.filter(n => !n.is_read).length);
       }
-    };
+    } catch (err) {
+      console.error('Error fetching notifications:', err);
+    }
+  };
 
-    init();
+  useEffect(() => {
+    fetchLocalNotifications();
 
-    return () => {
-      if (channel) supabase.removeChannel(channel);
-    };
+    // Poll for new notifications every 4 seconds so simulated events pop up immediately!
+    const interval = setInterval(fetchLocalNotifications, 4000);
+    return () => clearInterval(interval);
   }, []);
 
   const toggleTheme = () => {
@@ -72,18 +49,35 @@ export default function TopBar({ title, subtitle, primaryAction, secondaryAction
 
   const markAllAsRead = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      const storedEmail = typeof window !== 'undefined' ? sessionStorage.getItem('aq_user_email') : null;
+      if (!storedEmail) return;
 
-      await supabase
-        .from('notifications')
-        .update({ is_read: true })
-        .eq('user_id', user.id);
+      const res = await fetch('/api/notifications', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ markAll: true, email: storedEmail })
+      });
 
-      setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-      setUnreadCount(0);
+      if (res.ok) {
+        setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+        setUnreadCount(0);
+      }
     } catch (err) {
       console.error('Mark all as read error:', err);
+    }
+  };
+
+  const handleItemClick = async (notif) => {
+    try {
+      await fetch('/api/notifications', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: notif.id })
+      });
+      // Refresh
+      fetchLocalNotifications();
+    } catch (err) {
+      console.error('Error marking single notification read:', err);
     }
   };
 
@@ -138,7 +132,12 @@ export default function TopBar({ title, subtitle, primaryAction, secondaryAction
                   <div className="nd-empty">No notifications yet</div>
                 ) : (
                   notifications.map((n) => (
-                    <div key={n.id} className={cn("nd-item", !n.is_read && "unread")}>
+                    <div 
+                      key={n.id} 
+                      className={cn("nd-item", !n.is_read && "unread")}
+                      onClick={() => handleItemClick(n)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <div className="nd-item-title">{n.title}</div>
                       <div className="nd-item-msg">{n.message}</div>
                       <div className="nd-item-time">

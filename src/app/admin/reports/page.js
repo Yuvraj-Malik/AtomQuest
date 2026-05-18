@@ -12,17 +12,16 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { downloadReport } from "@/lib/reportDownload";
 
 export default function ReportsPage() {
   const [exporting, setExporting] = useState(null);
 
-  const handleExport = (reportName) => {
+  const handleExport = (reportId, format, reportName) => {
     setExporting(reportName);
     toast.success(`Preparing ${reportName}...`);
-    setTimeout(() => {
-      toast.success(`${reportName} download started.`);
-      setExporting(null);
-    }, 2000);
+    downloadReport(`/api/reports/export?report=${encodeURIComponent(reportId)}&format=${encodeURIComponent(format)}`);
+    setTimeout(() => setExporting(null), 800);
   };
 
   const reports = [
@@ -114,7 +113,7 @@ export default function ReportsPage() {
             
             <div className="flex gap-2 mt-auto border-t border-[var(--border)] pt-4">
               <button 
-                onClick={() => handleExport(`${report.title} (CSV)`)}
+                onClick={() => handleExport(report.id, 'csv', `${report.title} (CSV)`)}
                 disabled={exporting !== null}
                 className="tb-btn tb-btn-ghost flex-1 py-2 text-[12.5px] flex justify-center items-center gap-2 hover:border-[var(--accent)] hover:text-[var(--accent)]"
               >
@@ -122,12 +121,12 @@ export default function ReportsPage() {
                 {exporting === `${report.title} (CSV)` ? "Preparing..." : "Export CSV"}
               </button>
               <button 
-                onClick={() => handleExport(`${report.title} (PDF)`)}
+                onClick={() => handleExport(report.id, 'xls', `${report.title} (Excel)`)}
                 disabled={exporting !== null}
                 className="tb-btn tb-btn-ghost flex-1 py-2 text-[12.5px] flex justify-center items-center gap-2 hover:border-[var(--blue)] hover:text-[var(--blue)]"
               >
                 <FileText className="w-4 h-4" /> 
-                {exporting === `${report.title} (PDF)` ? "Preparing..." : "Export PDF"}
+                {exporting === `${report.title} (Excel)` ? "Preparing..." : "Export Excel"}
               </button>
             </div>
           </div>

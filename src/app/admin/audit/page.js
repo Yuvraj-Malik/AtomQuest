@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { downloadReport } from "@/lib/reportDownload";
 
 export default function AuditPage() {
   const [logs, setLogs] = useState([]);
@@ -36,9 +37,7 @@ export default function AuditPage() {
 
   const handleExport = () => {
     toast.success("Exporting audit logs to CSV...");
-    setTimeout(() => {
-      toast.success("Export complete. Download starting.");
-    }, 1500);
+    downloadReport('/api/reports/export?report=audit&format=csv');
   };
 
   if (loading) {
@@ -59,29 +58,32 @@ export default function AuditPage() {
   });
 
   return (
-    <div className="p-6">
-      {/* Top Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div>
-          <h2 className="text-[24px] font-semibold text-[var(--text1)] tracking-tight flex items-center gap-2">
-            <History className="w-6 h-6 text-[var(--accent)]" /> 
-            Audit Trail
-          </h2>
-          <p className="text-[13.5px] text-[var(--text2)] mt-1">Review system activities, security events, and administrative actions.</p>
+    <div className="p-6 space-y-6 bg-[var(--bg)] min-h-screen">
+      <div className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(135deg,rgba(91,156,246,0.09),rgba(200,240,96,0.06),rgba(255,255,255,0.02))] p-6 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(91,156,246,0.18),transparent_36%),radial-gradient(circle_at_bottom_left,rgba(200,240,96,0.12),transparent_32%)]" />
+        <div className="relative z-[1] flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text2)] mb-3">
+              <History className="w-3.5 h-3.5 text-[var(--accent)]" /> Governance log
+            </div>
+            <h2 className="text-[28px] font-semibold text-[var(--text1)] tracking-tight flex items-center gap-2">
+              <History className="w-7 h-7 text-[var(--accent)]" />
+              Audit Trail
+            </h2>
+            <p className="text-[13.5px] text-[var(--text2)] mt-2 max-w-xl">Review system activities, security events, and administrative actions in a cleaner, denser layout.</p>
+          </div>
+
+          <button 
+            onClick={handleExport}
+            className="tb-btn tb-btn-ghost px-4 py-2 flex items-center gap-2 self-start bg-[var(--surface)]"
+          >
+            <Download className="w-4 h-4" /> Export CSV
+          </button>
         </div>
-        
-        <button 
-          onClick={handleExport}
-          className="tb-btn tb-btn-ghost px-4 py-2 flex items-center gap-2 self-start"
-        >
-          <Download className="w-4 h-4" /> Export CSV
-        </button>
       </div>
 
-      <div className="h-[1px] bg-[var(--border)] w-full mb-6" />
-
-      {/* Filters Row */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full max-w-md">
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-[var(--text3)]" />
           <input 
@@ -106,12 +108,13 @@ export default function AuditPage() {
             ))}
           </select>
         </div>
+        </div>
       </div>
 
       {/* Audit Logs Table */}
-      <div className="enterprise-table-wrapper border border-[var(--border)] rounded-xl overflow-hidden bg-[var(--surface)] shadow-lg">
+      <div className="rounded-2xl border border-[var(--border)] overflow-hidden bg-[var(--surface)] shadow-sm">
         <table className="w-full text-left">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="border-b border-[var(--border)] bg-[var(--surface2)]">
               <th className="enterprise-table-th text-[var(--text2)] w-[140px]">Timestamp</th>
               <th className="enterprise-table-th text-[var(--text2)] w-[180px]">Actor</th>

@@ -129,7 +129,7 @@ const demoRoles = [
   { label: "Admin",    badge: "Demo", iconBg: "rgba(52,211,153,.12)",  badgeBg: "#051a10", badgeColor: "#34d399", icon: <IconShield color="#34d399" /> },
 ];
 
-export default function LandingPage({ onLogin, onDemoLogin, isLoading }) {
+export default function LandingPage({ onLogin, onDemoLogin, onEntraLogin, isLoading, microsoftLoginError = "" }) {
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
 
@@ -281,6 +281,37 @@ export default function LandingPage({ onLogin, onDemoLogin, isLoading }) {
                 {isLoading ? "Signing in..." : "Sign in"} <IconArrow />
               </button>
             </form>
+
+            <button
+              type="button"
+              onClick={() => onEntraLogin?.()}
+              disabled={isLoading}
+              className="aq-anim-7 aq-demo-btn"
+              style={{width:"100%",padding:13,fontSize:13,fontWeight:600,background:"#0a0a0f",color:"#e4e4e7",border:"1px solid #1e1e28",borderRadius:9,cursor:isLoading ? "not-allowed" : "pointer",fontFamily:"'Syne',sans-serif",letterSpacing:"-.01em",marginTop:12,display:"flex",alignItems:"center",justifyContent:"center",gap:10,transition:"opacity .15s,transform .1s"}}
+            >
+              <span style={{display:"inline-flex",width:18,height:18,borderRadius:4,background:"linear-gradient(135deg,#2b579a,#5b9bd5)",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:700}}>M</span>
+              Sign in with Microsoft
+            </button>
+
+            {microsoftLoginError && (
+              <div
+                className="aq-anim-7"
+                role="alert"
+                style={{
+                  marginTop: 12,
+                  padding: '12px 14px',
+                  borderRadius: 10,
+                  border: '1px solid rgba(224, 92, 92, 0.22)',
+                  background: 'rgba(224, 92, 92, 0.08)',
+                  color: '#f3b4b4',
+                  fontSize: 12,
+                  lineHeight: 1.5,
+                }}
+              >
+                <div style={{fontWeight: 600, marginBottom: 2}}>Microsoft sign-in failed</div>
+                <div>{microsoftLoginError}</div>
+              </div>
+            )}
 
             {/* Divider */}
             <div className="aq-anim-8" style={{display:"flex",alignItems:"center",gap:12,margin:"24px 0 20px"}}>

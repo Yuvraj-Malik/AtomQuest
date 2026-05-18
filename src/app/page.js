@@ -6,13 +6,37 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import LandingPage from "@/components/LandingPage";
 
+async function routeAuthenticatedUser(router) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return false;
+  }
+
+  const email = user.email || '';
+  const byEmail = email
+    ? await fetch(`/api/profiles?email=${encodeURIComponent(email)}`)
+    : null;
+  const profile = byEmail && byEmail.ok ? await byEmail.json() : null;
+
+  if (!profile) {
+    return false;
+  }
+
+  sessionStorage.setItem('aq_user_email', email);
+  sessionStorage.setItem('aq_user_role', profile.role);
+  router.push(`/${profile.role}/dashboard`);
+  return true;
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [microsoftLoginError, setMicrosoftLoginError] = useState("");
 
   useEffect(() => {
     setMounted(true);
+    routeAuthenticatedUser(router).catch(() => {});
   }, []);
 
   const handleAuth = async (email, password) => {
@@ -75,8 +99,26 @@ export default function LoginPage() {
   return (
     <LandingPage
       isLoading={isLoading}
+      microsoftLoginError={microsoftLoginError}
       onLogin={({ email, password }) => {
         handleAuth(email, password);
+      }}
+      onEntraLogin={async () => {
+        setMicrosoftLoginError("");
+        setIsLoading(true);
+        try {
+          const redirectTo = typeof window !== 'undefined' ? window.location.origin : undefined;
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'azure',
+            options: { redirectTo }
+          });
+
+          if (error) throw error;
+        } catch (error) {
+          setMicrosoftLoginError(error.message || 'Microsoft sign-in failed. Please try again.');
+          toast.error('Microsoft sign-in failed');
+          setIsLoading(false);
+        }
       }}
       onDemoLogin={(role) => {
         const creds = {

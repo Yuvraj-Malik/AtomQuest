@@ -26,6 +26,7 @@ import {
   Sun,
   Shield
 } from "lucide-react";
+import NotificationHub from "./NotificationHub";
 
 export default function Sidebar({ role, user, userName, userInitials, refreshProfile }) {
   const pathname = usePathname();
@@ -186,7 +187,8 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
   const navGroups = getNavItems(role);
 
   return (
-    <aside className={cn("sidebar", isCollapsed && "collapsed")}>
+    <>
+      <aside className={cn("sidebar", isCollapsed && "collapsed")}>
       <div className="sidebar-top">
         <div className="wordmark">
           <div className="wm-icon">
@@ -479,5 +481,7 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
         </div>
       )}
     </aside>
+      <NotificationHub />
+    </>
   );
 }

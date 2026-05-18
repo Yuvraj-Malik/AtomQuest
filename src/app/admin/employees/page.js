@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 export default function EmployeesPage() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState("hierarchy"); // 'directory' | 'hierarchy'
+  const [viewMode, setViewMode] = useState("directory"); // 'directory' | 'hierarchy'
   
   // Search / filter state for directory
   const [searchQuery, setSearchQuery] = useState("");
@@ -84,30 +84,47 @@ export default function EmployeesPage() {
     return matchesSearch && matchesDept && matchesLoc && matchesDesig && matchesRole;
   });
 
+  const hasActiveFilters = Boolean(
+    searchQuery ||
+    deptFilter !== "all" ||
+    locationFilter !== "all" ||
+    designationFilter !== "all" ||
+    roleFilter !== "all"
+  );
+
 
   // Hierarchy Data Extraction
   const admin = profiles.find(p => p.role === "admin");
   const managers = profiles.filter(p => p.role === "manager");
   const employees = profiles.filter(p => p.role === "employee");
+  const summaryCards = [
+    { label: "Total Profiles", value: profiles.length, tone: "blue" },
+    { label: "Managers", value: managers.length, tone: "green" },
+    { label: "Employees", value: employees.length, tone: "amber" },
+    { label: "View Mode", value: viewMode === "directory" ? "Directory" : "Hierarchy", tone: "accent" },
+  ];
 
   return (
-    <div className="p-6">
-      {/* Top Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div>
-          <h2 className="text-[24px] font-semibold text-[var(--text1)] tracking-tight flex items-center gap-2">
-            <Users className="w-6 h-6 text-[var(--accent)] shrink-0" /> 
-            Employee Directory
-          </h2>
-          <p className="text-[13.5px] text-[var(--text2)] mt-1">Manage user accounts, roles, and connected organizational chart.</p>
-        </div>
+    <div className="p-6 space-y-6">
+      <div className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(135deg,rgba(91,156,246,0.08),rgba(200,240,96,0.08),rgba(255,255,255,0.02))] p-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-40 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(200,240,96,0.20),transparent_36%),radial-gradient(circle_at_bottom_left,rgba(91,156,246,0.15),transparent_32%)]" />
+        <div className="relative z-[1] flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text2)] mb-3">
+              <UserCheck className="w-3.5 h-3.5 text-[var(--accent)]" /> Admin organization center
+            </div>
+            <h2 className="text-[28px] font-semibold text-[var(--text1)] tracking-tight flex items-center gap-2">
+              <Users className="w-7 h-7 text-[var(--accent)] shrink-0" />
+              Employee Directory
+            </h2>
+            <p className="text-[13.5px] text-[var(--text2)] mt-2 max-w-xl">Review every profile, navigate the reporting tree, and switch between hierarchy and directory views without losing context.</p>
+          </div>
 
-        {/* View Mode Toggle Segment Controller */}
-        <div className="flex bg-[var(--surface2)] border border-[var(--border)] p-1 rounded-lg self-start">
+          <div className="flex bg-[var(--surface2)] border border-[var(--border)] p-1 rounded-xl self-start shadow-sm">
           <button 
             onClick={() => setViewMode("hierarchy")}
             className={cn(
-              "px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition flex items-center gap-1.5",
+              "px-3.5 py-1.5 rounded-lg text-[12.5px] font-medium transition flex items-center gap-1.5",
               viewMode === "hierarchy" 
                 ? "bg-[var(--surface)] text-[var(--text1)] shadow-sm border border-[var(--border)]" 
                 : "text-[var(--text3)] hover:text-[var(--text1)]"
@@ -128,16 +145,24 @@ export default function EmployeesPage() {
             <Users className="w-3.5 h-3.5" />
             Directory List
           </button>
+          </div>
         </div>
       </div>
 
-      <div className="h-[1px] bg-[var(--border)] w-full mb-8" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {summaryCards.map((card) => (
+          <div key={card.label} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
+            <div className="text-[11px] uppercase tracking-wider text-[var(--text3)] mb-1">{card.label}</div>
+            <div className="text-[22px] font-semibold text-[var(--text1)]">{card.value}</div>
+          </div>
+        ))}
+      </div>
 
       {/* --- 📋 FLAT DIRECTORY LIST VIEW --- */}
       {viewMode === "directory" && (
-        <div className="space-y-4">
+        <div className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
           {/* Filters Row */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div className="flex items-center gap-3 w-full max-w-md">
               <div className="relative w-full">
                 <Search className="absolute left-3 top-2.5 w-4 h-4 text-[var(--text3)]" />
@@ -168,11 +193,34 @@ export default function EmployeesPage() {
                 <option value="all">All Roles</option>
                 {roles.filter(r => r !== "all").map(r => <option key={r} value={r} className="capitalize">{r}</option>)}
               </select>
+
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setDeptFilter("all");
+                    setLocationFilter("all");
+                    setDesignationFilter("all");
+                    setRoleFilter("all");
+                  }}
+                  className="tb-btn tb-btn-ghost px-3 py-1.5 text-[12px]"
+                >
+                  Clear filters
+                </button>
+              )}
             </div>
           </div>
 
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-4 py-3 text-[12.5px] text-[var(--text2)]">
+            <div>
+              Showing <span className="font-semibold text-[var(--text1)]">{filteredProfiles.length}</span> of <span className="font-semibold text-[var(--text1)]">{profiles.length}</span> profiles
+            </div>
+            {hasActiveFilters && <span className="badge badge-accent">Filtered view</span>}
+          </div>
+
           {/* Directory Table */}
-          <div className="enterprise-table-wrapper border border-[var(--border)] rounded-xl overflow-hidden bg-[var(--surface)] mt-4">
+          <div className="enterprise-table-wrapper border border-[var(--border)] rounded-xl overflow-hidden bg-[var(--surface2)] mt-4">
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--surface2)]">
@@ -233,7 +281,14 @@ export default function EmployeesPage() {
 
       {/* --- 📊 CONNECTED HIERARCHY TREE VIEW --- */}
       {viewMode === "hierarchy" && (
-        <div className="flex flex-col items-center py-6 w-full overflow-x-auto min-w-[600px]">
+        <div className="flex flex-col items-center gap-5 py-6 w-full overflow-x-auto min-w-[600px] rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
+          <div className="flex items-center justify-between gap-3 w-full max-w-[800px] px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--surface2)] text-[12.5px] text-[var(--text2)]">
+            <div>
+              Click a manager card to collapse or expand that branch.
+            </div>
+            <span className="badge badge-neutral">{managers.length} teams</span>
+          </div>
+
           {/* Tier 1: Admin */}
           {admin && (
             <div className="flex flex-col items-center relative pb-8">

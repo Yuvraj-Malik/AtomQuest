@@ -16,6 +16,8 @@ export default function GoalUnlockPage() {
   const [profiles, setProfiles] = useState({});
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [departmentFilter, setDepartmentFilter] = useState("all");
   const [actioning, setActioning] = useState(null);
 
   async function loadData() {
@@ -83,43 +85,108 @@ export default function GoalUnlockPage() {
 
   const filteredGoals = goals.filter(g => {
     const empName = profiles[g.employee_id]?.name || "";
-    const searchString = `${g.title} ${empName}`.toLowerCase();
-    return searchString.includes(searchQuery.toLowerCase());
+    const department = profiles[g.employee_id]?.department || "";
+    const searchString = `${g.title} ${empName} ${department}`.toLowerCase();
+    const matchesSearch = searchString.includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === "all" || g.status === statusFilter;
+    const matchesDepartment = departmentFilter === "all" || department === departmentFilter;
+    return matchesSearch && matchesStatus && matchesDepartment;
   });
 
+  const departments = [
+    "all",
+    ...new Set(goals.map(g => profiles[g.employee_id]?.department).filter(Boolean))
+  ];
+
+  const statuses = [
+    "all",
+    ...new Set(goals.map(g => g.status).filter(Boolean))
+  ];
+
+  const hasActiveFilters = Boolean(searchQuery || statusFilter !== "all" || departmentFilter !== "all");
+
   return (
-    <div className="p-6">
-      {/* Top Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div>
-          <h2 className="text-[24px] font-semibold text-[var(--text1)] tracking-tight flex items-center gap-2">
-            <Unlock className="w-6 h-6 text-[var(--amber)]" /> 
+    <div className="p-6 space-y-6 bg-[var(--bg)] min-h-screen">
+      <div className="rounded-2xl border border-[var(--border)] bg-[linear-gradient(135deg,rgba(245,158,11,0.10),rgba(255,255,255,0.02))] p-6 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.18),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(91,156,246,0.08),transparent_32%)]" />
+        <div className="relative z-[1] max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text2)] mb-3">
+            <Unlock className="w-3.5 h-3.5 text-[var(--amber)]" /> Administrative override
+          </div>
+          <h2 className="text-[28px] font-semibold text-[var(--text1)] tracking-tight flex items-center gap-2">
+            <Unlock className="w-7 h-7 text-[var(--amber)]" />
             Goal Sheet Unlock
           </h2>
-          <p className="text-[13.5px] text-[var(--text2)] mt-1">Administratively unlock submitted or approved goals back to draft status.</p>
+          <p className="text-[13.5px] text-[var(--text2)] mt-2 max-w-xl">Administratively unlock submitted or approved goals back to draft status with a cleaner queue and less clutter.</p>
         </div>
       </div>
 
-      <div className="h-[1px] bg-[var(--border)] w-full mb-6" />
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
+        <div className="flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between">
+          <div className="relative w-full lg:max-w-md">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-[var(--text3)]" />
+            <input 
+              type="text" 
+              placeholder="Search goal titles, employee names, or departments..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="form-input pl-9 text-[var(--text1)]"
+            />
+          </div>
 
-      {/* Filters Row */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
-        <div className="relative w-full max-w-md">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-[var(--text3)]" />
-          <input 
-            type="text" 
-            placeholder="Search goal titles, employee names..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="form-input pl-9 text-[var(--text1)]"
-          />
+          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="form-select w-full sm:w-[180px]"
+            >
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status === "all" ? "All statuses" : status.charAt(0).toUpperCase() + status.slice(1)}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={departmentFilter}
+              onChange={(e) => setDepartmentFilter(e.target.value)}
+              className="form-select w-full sm:w-[200px]"
+            >
+              {departments.map((department) => (
+                <option key={department} value={department}>
+                  {department === "all" ? "All departments" : department}
+                </option>
+              ))}
+            </select>
+
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setStatusFilter("all");
+                  setDepartmentFilter("all");
+                }}
+                className="tb-btn tb-btn-ghost px-3 py-2 text-[12px] whitespace-nowrap"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
         </div>
+      </div>
+
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-[12.5px] text-[var(--text2)]">
+        <div>
+          Showing <span className="font-semibold text-[var(--text1)]">{filteredGoals.length}</span> of <span className="font-semibold text-[var(--text1)]">{goals.length}</span> unlocked candidates
+        </div>
+        {hasActiveFilters && <span className="badge badge-accent w-fit">Filtered queue</span>}
       </div>
 
       {/* Goals Table */}
-      <div className="enterprise-table-wrapper border border-[var(--border)] rounded-xl overflow-hidden bg-[var(--surface)] shadow-lg">
+      <div className="rounded-2xl border border-[var(--border)] overflow-hidden bg-[var(--surface)] shadow-sm">
         <table className="w-full text-left">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="border-b border-[var(--border)] bg-[var(--surface2)]">
               <th className="enterprise-table-th text-[var(--text2)]">Employee</th>
               <th className="enterprise-table-th text-[var(--text2)]">Goal Title</th>

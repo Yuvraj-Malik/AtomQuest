@@ -17,7 +17,18 @@ export async function POST(request) {
     }
 
     const created = employeeIds.map(empId => {
-      const goal = createGoal({ title, description, target_value, weightage: normalizedWeightage, employee_id: empId, status: 'approved' });
+      const goal = createGoal({
+        title,
+        description,
+        target_value,
+        weightage: normalizedWeightage,
+        employee_id: empId,
+        status: 'approved',
+        is_shared: true,
+        shared_goal: true,
+        editable_by_recipient: false,
+        shared_fields_locked: ['title', 'target_value']
+      });
       const profile = getProfileById(empId);
       const name = profile ? profile.name : empId;
       addAuditLog('Manager', `Pushed shared goal '${title}' to ${name}`, 'Created');
@@ -27,6 +38,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, created });
   } catch (error) {
     console.error('API Shared Goals POST error:', error);
-    return NextResponse.json({ error: 'Failed to push shared goals' }, { status: 500 });
+    const status = /weightage|goal sheet|cycle|maximum|minimum|active cycle/i.test(error.message || '') ? 400 : 500;
+    return NextResponse.json({ error: error.message || 'Failed to push shared goals' }, { status });
   }
 }
