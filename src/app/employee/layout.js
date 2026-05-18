@@ -10,11 +10,41 @@ export default function EmployeeLayout({ children }) {
 
   const getUser = async () => {
     try {
+      // Priority 1: email stored during login (works for real Gmail accounts too)
+      const storedEmail = sessionStorage.getItem('aq_user_email');
+
+      if (storedEmail) {
+        const res = await fetch(`/api/profiles?email=${encodeURIComponent(storedEmail)}`);
+        if (res.ok) {
+          const profile = await res.json();
+          if (profile && profile.role === 'employee') { setUser(profile); return; }
+        }
+      }
+
+      // Priority 2: Supabase auth email
       const { data: { user: authUser } } = await supabase.auth.getUser();
-      const email = authUser?.email || 'aryan@demo.com';
-      const res = await fetch(`/api/profiles?email=${email}`);
-      if (res.ok) {
-        const profile = await res.json();
+      if (authUser?.email) {
+        const res = await fetch(`/api/profiles?email=${encodeURIComponent(authUser.email)}`);
+        if (res.ok) {
+          const profile = await res.json();
+          if (profile && profile.role === 'employee') { setUser(profile); return; }
+        }
+      }
+
+      // Priority 3: Supabase auth id
+      if (authUser?.id) {
+        const res = await fetch(`/api/profiles?id=${authUser.id}`);
+        if (res.ok) {
+          const profile = await res.json();
+          if (profile && profile.role === 'employee') { setUser(profile); return; }
+        }
+      }
+
+      // Final fallback: first employee in the dataset
+      const allRes = await fetch(`/api/profiles?all=true`);
+      if (allRes.ok) {
+        const profiles = await allRes.json();
+        const profile = (profiles || []).find(p => p.role === 'employee') || (profiles && profiles[0]) || null;
         setUser(profile);
       }
     } catch (err) {

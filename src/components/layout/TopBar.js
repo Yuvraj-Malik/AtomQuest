@@ -4,26 +4,23 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { Bell, Check, X, Clock } from "lucide-react";
+import { useTheme } from 'next-themes';
 
 export default function TopBar({ title, subtitle, primaryAction, secondaryAction }) {
-  const [theme, setTheme] = useState("dark");
+  const { theme, setTheme } = useTheme();
   const [notifications, setNotifications] = useState([]);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    document.documentElement.setAttribute("data-theme", savedTheme);
-
     let channel;
 
     const init = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      // Fetch existing notifications
       try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        // Fetch existing notifications for user
         const { data, error } = await supabase
           .from('notifications')
           .select('*')
@@ -31,39 +28,34 @@ export default function TopBar({ title, subtitle, primaryAction, secondaryAction
           .order('created_at', { ascending: false })
           .limit(10);
 
-        if (error) {
-          if (error.code === 'PGRST116' || error.message.includes('not found')) {
-            console.warn("Notifications table not found.");
-          }
-        } else if (data) {
+        if (!error && data) {
           setNotifications(data);
           setUnreadCount(data.filter(n => !n.is_read).length);
         }
-      } catch (err) {}
 
-      // Clean up any existing channel with the same name to avoid "after subscribe" errors
-      const channelName = `notifs-${user.id}-${Math.random().toString(36).substr(2, 9)}`;
-      
-      channel = supabase
-        .channel(channelName)
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'notifications',
-            filter: `user_id=eq.${user.id}`
-          },
-          (payload) => {
-            setNotifications(prev => [payload.new, ...prev].slice(0, 10));
-            setUnreadCount(prev => prev + 1);
-          }
-        )
-        .subscribe((status) => {
-          if (status === 'SUBSCRIBED') {
-            console.log('Realtime subscribed for notifications');
-          }
-        });
+        // Subscribe to new notifications
+        const channelName = `notifs-${user.id}-${Math.random().toString(36).substr(2, 9)}`;
+        channel = supabase
+          .channel(channelName)
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'notifications',
+              filter: `user_id=eq.${user.id}`
+            },
+            (payload) => {
+              setNotifications(prev => [payload.new, ...prev].slice(0, 10));
+              setUnreadCount(prev => prev + 1);
+            }
+          )
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') console.log('Realtime subscribed for notifications');
+          });
+      } catch (err) {
+        console.error('Notifications init error:', err);
+      }
     };
 
     init();
@@ -74,23 +66,25 @@ export default function TopBar({ title, subtitle, primaryAction, secondaryAction
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
   };
 
   const markAllAsRead = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
 
-    await supabase
-      .from('notifications')
-      .update({ is_read: true })
-      .eq('user_id', user.id);
+      await supabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('user_id', user.id);
 
-    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-    setUnreadCount(0);
+      setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+      setUnreadCount(0);
+    } catch (err) {
+      console.error('Mark all as read error:', err);
+    }
   };
 
   return (

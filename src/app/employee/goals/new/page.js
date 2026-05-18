@@ -1,157 +1,208 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TopBar from "@/components/layout/TopBar";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { Check, Plus } from "lucide-react";
 
 const UOM_HINTS = {
-  nm: 'Score: Achievement ÷ Target × 100 — higher achievement scores better',
-  nx: 'Score: Target ÷ Achievement × 100 — lower achievement scores better (e.g. cost, TAT)',
-  pct: 'Score: Actual % ÷ Target % — e.g. 80% actual vs 100% target = 80 score',
-  tl: 'Score: completed before deadline → 100%, else proportional deduction',
-  z: 'Score: achievement = 0 → 100% success · any non-zero value → 0% (e.g. safety incidents)'
+  nm: 'Numeric — higher is better. Score = Achievement ÷ Target × 100',
+  nx: 'Numeric — lower is better (e.g. cost). Score = Target ÷ Achievement × 100',
+  pct: 'Percentage — measured directly as % of target',
+  tl: 'Timeline — completed before deadline is full credit',
+  z: 'Zero-based — 0 = success (e.g. incidents)'
 };
 
 export default function CreateGoalPage() {
   const router = useRouter();
-  const [uom, setUom] = useState("nm");
-  const [weight, setWeight] = useState(20);
 
-  const handleSubmit = (e) => {
+  // Form state
+  const [thrustArea, setThrustArea] = useState('Revenue Growth');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [uom, setUom] = useState('nm');
+  const [targetValue, setTargetValue] = useState('');
+  const [weightage, setWeightage] = useState(20);
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setErrors({});
+  }, [title, targetValue, weightage]);
+
+  function validate() {
+    const err = {};
+    if (!title.trim()) err.title = 'Please enter a goal title';
+    if (!targetValue.trim()) err.targetValue = 'Please provide a target value';
+    if (!weightage || weightage < 10 || weightage > 100) err.weightage = 'Weightage must be 10–100%';
+    return err;
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    toast.success('Goal submitted for manager approval');
-    router.push('/employee/dashboard');
-  };
+    const err = validate();
+    if (Object.keys(err).length) {
+      setErrors(err);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      // get current user id from supabase client dynamically
+      const { data: { user } } = await (await import('@/lib/supabase')).supabase.auth.getUser();
+      const payload = {
+        employee_id: user?.id || null,
+        thrust_area: thrustArea,
+        title,
+        description,
+        uom,
+        target_value: targetValue,
+        weightage: Number(weightage),
+        status: 'submitted'
+      };
+
+      const res = await fetch('/api/goals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const payloadErr = await res.json().catch(() => ({}));
+        throw new Error(payloadErr?.error || 'Failed to create goal');
+      }
+
+      toast.success('Goal created and submitted for approval');
+      router.push('/employee/goals');
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || 'Unable to create goal');
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
-    <>
-      <TopBar 
-        title="Create new goal" 
-        subtitle="Define a new objective for the current cycle." 
-      />
-      
+    <div>
+      <TopBar title="Create goal" subtitle="Create an objective that your manager can review and approve" />
+
       <main className="content">
-        <div className="max-w-[600px]">
-          <form onSubmit={handleSubmit}>
-            <div className="card mb-[14px]">
-              <div className="card-header">
-                <div className="card-title">New goal</div>
-                <span className="badge badge-amber">Draft</span>
-              </div>
-              
-              <div className="section-pad">
-                <div className="bg-[var(--surface2)] border border-[var(--border)] rounded-[var(--r)] p-[12px_14px] mb-[16px]">
-                  <div className="flex justify-between text-[11.5px] mb-[6px]">
-                    <span className="text-[var(--text3)]">Total weightage used</span>
-                    <span className="weight-status font-medium text-[var(--green)]">
-                      100% — balanced
-                    </span>
-                  </div>
-                  <div className="weight-bar">
-                    <div className="weight-fill bg-[var(--green)]" style={{ width: '100%' }}></div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Left: form */}
+          <div className="md:col-span-2">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="card">
+                <div className="card-header">
+                  <div className="card-title">New goal</div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[12px] text-[var(--text3)]">Status</span>
+                    <span className="badge badge-amber">Draft</span>
                   </div>
                 </div>
 
-                <div className="form-row">
-                  <div className="form-group">
-                    <label className="form-label">Thrust area</label>
-                    <select className="form-select">
-                      <option>Revenue Growth</option>
-                      <option>Market Expansion</option>
-                      <option>Efficiency</option>
-                      <option>Compliance</option>
-                      <option>Safety</option>
-                      <option>Learning & Development</option>
-                    </select>
+                <div className="section-pad space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="form-label">Thrust area</label>
+                      <select className="form-select" value={thrustArea} onChange={(e) => setThrustArea(e.target.value)}>
+                        <option>Revenue Growth</option>
+                        <option>Market Expansion</option>
+                        <option>Efficiency</option>
+                        <option>Compliance</option>
+                        <option>Safety</option>
+                        <option>Learning & Development</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="form-label">Unit of measurement</label>
+                      <select className="form-select" value={uom} onChange={(e) => setUom(e.target.value)}>
+                        <option value="nm">Numeric (higher = better)</option>
+                        <option value="nx">Numeric (lower = better)</option>
+                        <option value="pct">Percentage</option>
+                        <option value="tl">Timeline</option>
+                        <option value="z">Zero-based</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label className="form-label">Unit of measurement</label>
-                    <select 
-                      className="form-select" 
-                      value={uom} 
-                      onChange={(e) => setUom(e.target.value)}
-                    >
-                      <option value="nm">Numeric — Min (higher = better)</option>
-                      <option value="nx">Numeric — Max (lower = better)</option>
-                      <option value="pct">Percentage (%)</option>
-                      <option value="tl">Timeline (date-based)</option>
-                      <option value="z">Zero-based (0 = success)</option>
-                    </select>
+
+                  <div>
+                    <label className="form-label">Goal title</label>
+                    <input className="form-input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Achieve ₹45L quarterly sales" />
+                    {errors.title && <div className="text-[12px] text-[var(--red)] mt-1">{errors.title}</div>}
                   </div>
-                </div>
 
-                <div className="form-group">
-                  <label className="form-label">Goal title</label>
-                  <input className="form-input" type="text" placeholder="e.g. Achieve ₹45L quarterly sales revenue" required />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Description</label>
-                  <textarea className="form-textarea" rows="3" placeholder="Describe scope, success criteria, and measurement approach..."></textarea>
-                </div>
-
-                <div className="form-row">
-                  <div className="form-group">
-                    <label className="form-label">Target value</label>
-                    <input className="form-input" type="text" placeholder="e.g. 4500000" required />
+                  <div>
+                    <label className="form-label">Description</label>
+                    <textarea className="form-textarea" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Scope, assumptions, and success criteria" />
                   </div>
-                  <div className="form-group">
-                    <label className="form-label">Weightage (10–100%)</label>
-                    <input 
-                      className="form-input font-mono" 
-                      type="number" 
-                      min="10" 
-                      max="100" 
-                      step="5" 
-                      value={weight} 
-                      onChange={(e) => setWeight(parseInt(e.target.value))}
-                    />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="form-label">Target value</label>
+                      <input className="form-input" value={targetValue} onChange={(e) => setTargetValue(e.target.value)} placeholder="e.g. 4500000" />
+                      {errors.targetValue && <div className="text-[12px] text-[var(--red)] mt-1">{errors.targetValue}</div>}
+                    </div>
+                    <div>
+                      <label className="form-label">Weightage (%)</label>
+                      <input className="form-input font-mono" type="number" min={10} max={100} step={5} value={weightage} onChange={(e) => setWeightage(Number(e.target.value))} />
+                      {errors.weightage && <div className="text-[12px] text-[var(--red)] mt-1">{errors.weightage}</div>}
+                    </div>
                   </div>
-                </div>
 
-                <div className="text-[11px] text-[var(--text3)] bg-[var(--surface2)] border border-[var(--border)] p-[9px_12px] rounded-[7px] mb-[16px]">
-                  {UOM_HINTS[uom]}
-                </div>
-
-                <div className="flex gap-2 justify-end">
-                  <button type="button" className="btn-ghost" onClick={() => router.push('/employee/dashboard')}>Cancel</button>
-                  <button type="submit" className="btn-primary">Submit for approval</button>
+                  <div className="flex justify-end gap-2">
+                    <button type="button" className="tb-btn tb-btn-ghost" onClick={() => router.push('/employee/goals')}>Cancel</button>
+                    <button type="submit" className="tb-btn tb-btn-primary" disabled={submitting}>{submitting ? 'Creating…' : 'Create & submit'}</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
-
-          <div className="card">
-            <div className="card-header">
-              <div className="card-title">Validation rules</div>
-            </div>
-            <div className="section-pad">
-              <div className="flex flex-col gap-2">
-                <ValidationItem label="Total weightage must equal exactly 100%" valid />
-                <ValidationItem label="Minimum 10% per individual goal" valid />
-                <ValidationItem label="Maximum 8 goals per employee" valid />
-                <ValidationItem label="Goals are locked after manager approval — admin intervention required to edit" warning />
-              </div>
-            </div>
+            </form>
           </div>
+
+          {/* Right: preview & tips */}
+          <aside>
+            <div className="card sticky top-6">
+              <div className="card-header">
+                <div className="card-title">Preview</div>
+                <div className="text-[12px] text-[var(--text3)]">Live preview of the goal</div>
+              </div>
+
+              <div className="section-pad space-y-4">
+                <div className="p-3 rounded bg-[var(--surface2)]">
+                  <div className="text-[13px] text-[var(--text2)]">Thrust</div>
+                  <div className="font-medium mt-1">{thrustArea}</div>
+                </div>
+
+                <div className="p-3 rounded bg-[var(--surface2)]">
+                  <div className="text-[13px] text-[var(--text2)]">Title</div>
+                  <div className="font-medium mt-1">{title || <span className="text-[var(--text3)]">— no title yet —</span>}</div>
+                </div>
+
+                <div className="p-3 rounded bg-[var(--surface2)]">
+                  <div className="text-[13px] text-[var(--text2)]">Target</div>
+                  <div className="font-mono mt-1">{targetValue || <span className="text-[var(--text3)]">—</span>}</div>
+                </div>
+
+                <div className="p-3 rounded bg-[var(--surface2)]">
+                  <div className="text-[13px] text-[var(--text2)]">Weightage</div>
+                  <div className="font-mono mt-1">{weightage}%</div>
+                </div>
+
+                <div className="p-3 rounded border border-[var(--border)] bg-[var(--surface3)] text-[13px] text-[var(--text2)]">
+                  <div className="flex items-center gap-2 mb-2"><Check size={14} className="text-[var(--green)]" /> Tips</div>
+                  <ul className="text-[13px] space-y-1 list-disc list-inside">
+                    <li>Be specific: include numbers and a deadline where possible.</li>
+                    <li>Keep weightage between 10% and 100%.</li>
+                    <li>Describe how success will be measured in the description.</li>
+                  </ul>
+                </div>
+
+                <div className="p-3 rounded bg-[var(--surface2)] text-[13px] text-[var(--text3)]">{UOM_HINTS[uom]}</div>
+              </div>
+            </div>
+          </aside>
         </div>
       </main>
-    </>
-  );
-}
-
-function ValidationItem({ label, valid, warning }) {
-  return (
-    <div className="flex gap-[9px] items-start">
-      <span className={cn(
-        "text-[12px]",
-        valid ? "text-[var(--green)]" : warning ? "text-[var(--amber)]" : "text-[var(--red)]"
-      )}>
-        {valid ? "✓" : warning ? "⚠" : "✕"}
-      </span>
-      <span className="text-[12px] text-[var(--text2)]">{label}</span>
     </div>
   );
 }

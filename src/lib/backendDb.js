@@ -19,7 +19,16 @@ function loadDb() {
     try {
       if (fs.existsSync(dbPath)) {
         const data = fs.readFileSync(dbPath, 'utf8');
-        dbCache = JSON.parse(data);
+        dbCache = {
+          profiles: [],
+          goals: [],
+          escalations: [],
+          cycles: [],
+          audit_logs: [],
+          checkins: [],
+          feedbacks: []
+        };
+        dbCache = { ...dbCache, ...JSON.parse(data) };
         return dbCache;
       }
     } catch (error) {
@@ -33,7 +42,10 @@ function loadDb() {
     goals: [],
     escalations: [],
     cycles: [],
-    audit_logs: []
+    audit_logs: [],
+    checkins: [],
+    feedbacks: [],
+    checkin_comments: []
   };
   return dbCache;
 }
@@ -94,6 +106,72 @@ export function createGoal(goal) {
   db.goals.push(newGoal);
   saveDb(db);
   return newGoal;
+}
+
+// Check‑ins handling
+export function getCheckins(employeeId) {
+  const db = loadDb();
+  const checkins = db.checkins || [];
+  if (employeeId) {
+    return checkins.filter(c => c.employee_id === employeeId);
+  }
+  return checkins;
+}
+
+export function createCheckin(checkin) {
+  const db = loadDb();
+  const newCheckin = {
+    id: checkin.id || `checkin-${Date.now()}`,
+    created_at: new Date().toISOString(),
+    ...checkin
+  };
+  db.checkins.push(newCheckin);
+  saveDb(db);
+  return newCheckin;
+}
+
+// Check-in comments handling
+export function getCheckinComments(managerId) {
+  const db = loadDb();
+  const comments = db.checkin_comments || [];
+  if (managerId) {
+    return comments.filter(c => String(c.manager_id) === String(managerId));
+  }
+  return comments;
+}
+
+export function createCheckinComment(comment) {
+  const db = loadDb();
+  const newComment = {
+    id: comment.id || `ccomment-${Date.now()}`,
+    created_at: new Date().toISOString(),
+    ...comment
+  };
+  db.checkin_comments.push(newComment);
+  saveDb(db);
+  return newComment;
+}
+
+// Feedback handling
+export function getFeedbacks(employeeId) {
+  const db = loadDb();
+  const feedbacks = db.feedbacks || [];
+  if (employeeId) {
+    return feedbacks.filter(f => f.employee_id === employeeId);
+  }
+  return feedbacks;
+}
+
+export function createFeedback(feedback) {
+  const db = loadDb();
+  const newFeedback = {
+    id: feedback.id || `feedback-${Date.now()}`,
+    created_at: new Date().toISOString(),
+    ...feedback
+  };
+  db.feedbacks.push(newFeedback);
+  saveDb(db);
+  return newFeedback;
 }
 
 export function updateGoal(id, updates) {

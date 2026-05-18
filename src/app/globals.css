@@ -638,3 +638,49 @@
 .text-red:hover {
   background: rgba(224, 92, 92, 0.08) !important;
 }
+
+/* Ensure explicit dark-theme variables when attribute is set to 'dark' */
+[data-theme='dark'] {
+  --bg: #0D0D0B;
+  --surface: #131311;
+  --surface2: #1A1A17;
+  --surface3: #212120;
+  --border: #282826;
+  --border2: #333330;
+  --border3: #3E3E3B;
+  --text1: #F0EDE6;
+  --text2: #8A8780;
+  --text3: #4A4A47;
+  --accent: #C8F060;
+  --accent-dim: #A8D040;
+  --accent-bg: rgba(200,240,96,0.06);
+  --accent-border: rgba(200,240,96,0.15);
+  --blue: #5B9CF6;
+  --blue-bg: rgba(91,156,246,0.07);
+  --amber: #E8A83A;
+  --amber-bg: rgba(232,168,58,0.07);
+  --red: #E05C5C;
+  --red-bg: rgba(224,92,92,0.07);
+  --green: #4BC98A;
+  --green-bg: rgba(75,201,138,0.07);
+}
+
+/* Enforce readable text colors for theme attribute targets */
+[data-theme='dark'] body,
+[data-theme='dark'] .text-primary,
+[data-theme='dark'] .text-secondary,
+[data-theme='dark'] .form-input,
+[data-theme='dark'] .form-select,
+[data-theme='dark'] .form-textarea {
+  color: var(--text1) !important;
+  background-color: transparent;
+}
+
+[data-theme='light'] body,
+[data-theme='light'] .text-primary,
+[data-theme='light'] .text-secondary,
+[data-theme='light'] .form-input,
+[data-theme='light'] .form-select,
+[data-theme='light'] .form-textarea {
+  color: var(--text1) !important;
+}

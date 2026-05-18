@@ -12,12 +12,20 @@ export default function ManagerTeamPage() {
 
   useEffect(() => {
     async function loadTeam() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const data = await fetchManagerTeam(user.id);
-        setTeam(data);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const res = await fetch(`/api/manager/team?managerId=${user.id}`);
+          if (res.ok) {
+            const data = await res.json();
+            setTeam(data || []);
+          }
+        }
+      } catch (err) {
+        console.error('Load manager team error:', err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     loadTeam();
   }, []);
@@ -63,7 +71,7 @@ export default function ManagerTeamPage() {
               <div className="mt-auto pt-4 border-t border-border flex justify-between items-center">
                 <span className="text-[12px] text-secondary">Active Goals: <strong className="text-primary">{member.goals?.length || 0}</strong></span>
                 <Link href={`/manager/team/${member.id}`}>
-                  <button className="text-accent hover:text-accent-hover text-[14px] font-medium flex items-center gap-1">
+                  <button className="tb-btn tb-btn-ghost text-[14px] font-medium flex items-center gap-1">
                     Review <ArrowRight className="w-4 h-4" />
                   </button>
                 </Link>

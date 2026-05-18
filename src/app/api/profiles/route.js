@@ -24,10 +24,8 @@ export async function GET(request) {
       if (profile) return NextResponse.json(profile);
     }
 
-    // Default session fallback: first admin
-    const profiles = getProfiles();
-    const admin = profiles.find(p => p.role === 'admin') || profiles[0];
-    return NextResponse.json(admin);
+    // No match — return null so callers can handle gracefully
+    return NextResponse.json(null);
   } catch (error) {
     console.error("API Profiles GET error:", error);
     return NextResponse.json({ error: "Failed to load profiles" }, { status: 500 });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import TopBar from "@/components/layout/TopBar";
 import { supabase } from "@/lib/supabase";
 import { CheckSquare, Loader2 } from "lucide-react";
 
@@ -27,21 +28,18 @@ export default function EmployeeCheckinsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+      <div>
+        <TopBar title="My Check-ins" subtitle="Review your past performance discussions." />
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+        </div>
       </div>
     );
   }
 
   return (
     <div>
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h2 className="text-[24px] font-semibold text-primary">My Check-ins</h2>
-          <p className="text-[14px] text-secondary mt-1">Review your past performance discussions.</p>
-        </div>
-      </div>
-      
+      <TopBar title="My Check-ins" subtitle="Review your past performance discussions." />
       <div className="h-[1px] bg-border w-full mb-8" />
 
       {checkins.length === 0 ? (

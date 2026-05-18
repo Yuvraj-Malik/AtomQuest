@@ -84,6 +84,8 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
   }, []);
 
   const handleLogout = async () => {
+    sessionStorage.removeItem('aq_user_email');
+    sessionStorage.removeItem('aq_user_role');
     await supabase.auth.signOut();
     router.push('/');
   };
@@ -138,7 +140,7 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
         return [
           { group: 'Overview', items: [
             { name: 'Team dashboard', href: '/manager/dashboard', icon: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' },
-            { name: 'My team', href: '/manager/team', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8' },
+            { name: 'My team', href: '/manager/team', icon: 'M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2M12 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8' },
           ]},
           { group: 'Actions', items: [
             { name: 'Pending approvals', href: '/manager/dashboard', icon: 'M9 11l3 3L22 4' },

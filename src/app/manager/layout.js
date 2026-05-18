@@ -10,12 +10,42 @@ export default function ManagerLayout({ children }) {
 
   const getUser = async () => {
     try {
+      // Priority 1: email stored during login (works for real Gmail accounts too)
+      const storedEmail = sessionStorage.getItem('aq_user_email');
+
+      if (storedEmail) {
+        const res = await fetch(`/api/profiles?email=${encodeURIComponent(storedEmail)}`);
+        if (res.ok) {
+          const profile = await res.json();
+          if (profile && profile.role === 'manager') { setUser(profile); return; }
+        }
+      }
+
+      // Priority 2: Supabase auth email
       const { data: { user: authUser } } = await supabase.auth.getUser();
-      const email = authUser?.email || 'rahul@demo.com';
-      const res = await fetch(`/api/profiles?email=${email}`);
-      if (res.ok) {
-        const profile = await res.json();
-        setUser(profile);
+      if (authUser?.email) {
+        const byEmail = await fetch(`/api/profiles?email=${encodeURIComponent(authUser.email)}`);
+        if (byEmail.ok) {
+          const profile = await byEmail.json();
+          if (profile && profile.role === 'manager') { setUser(profile); return; }
+        }
+      }
+
+      // Priority 3: Supabase auth id
+      if (authUser?.id) {
+        const byId = await fetch(`/api/profiles?id=${authUser.id}`);
+        if (byId.ok) {
+          const profile = await byId.json();
+          if (profile && profile.role === 'manager') { setUser(profile); return; }
+        }
+      }
+
+      // Final fallback: first manager in the dataset
+      const all = await fetch(`/api/profiles?all=true`);
+      if (all.ok) {
+        const profiles = await all.json();
+        const manager = (profiles || []).find(p => p.role === 'manager') || profiles[0] || null;
+        setUser(manager);
       }
     } catch (err) {
       console.error("Layout load user error:", err);

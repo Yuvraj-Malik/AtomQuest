@@ -77,7 +77,7 @@ export default function ManagerGoalReview({ params }) {
   }
 
   return (
-    <div>
+  <div>
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center gap-4">
           <Link href="/manager/team">
@@ -130,7 +130,7 @@ export default function ManagerGoalReview({ params }) {
               <div className="flex gap-3 pt-6 border-t border-border">
                 <button 
                   onClick={() => handleAction(goal.id, 'approve')}
-                  className="enterprise-btn flex items-center gap-2 bg-green text-white hover:bg-green/90"
+                  className="tb-btn tb-btn-primary flex items-center gap-2"
                   disabled={goal.status === 'approved'}
                   style={{ opacity: goal.status === 'approved' ? 0.6 : 1, cursor: goal.status === 'approved' ? 'not-allowed' : 'pointer' }}
                 >
@@ -139,7 +139,7 @@ export default function ManagerGoalReview({ params }) {
                 </button>
                 <button 
                   onClick={() => handleAction(goal.id, 'return')}
-                  className="enterprise-btn-secondary flex items-center gap-2 text-red border-red/20 hover:bg-red/5"
+                  className="tb-btn tb-btn-ghost flex items-center gap-2 text-red border-red/20"
                   disabled={goal.status === 'returned'}
                   style={{ opacity: goal.status === 'returned' ? 0.6 : 1, cursor: goal.status === 'returned' ? 'not-allowed' : 'pointer' }}
                 >
@@ -147,7 +147,7 @@ export default function ManagerGoalReview({ params }) {
                   Return for Edit
                 </button>
                 <button 
-                  className="enterprise-btn-ghost flex items-center gap-2 ml-auto"
+                  className="tb-btn tb-btn-ghost flex items-center gap-2 ml-auto"
                   onClick={() => toast("Comments module is coming soon!")}
                 >
                   <MessageSquare size={16} />

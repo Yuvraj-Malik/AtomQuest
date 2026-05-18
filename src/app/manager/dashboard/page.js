@@ -382,7 +382,7 @@ export default function ManagerDashboard() {
                   <input className="form-input" type="text" placeholder="e.g. 100%" />
                 </div>
                 <button 
-                  className="btn-primary w-full" 
+                  className="tb-btn tb-btn-primary w-full" 
                   onClick={() => toast.success('Shared goal pushed to all team members')}
                 >
                   Push to all team members
