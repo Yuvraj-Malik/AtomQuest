@@ -12,6 +12,89 @@ if (typeof window === 'undefined') {
 // Memory fallback to ensure absolute zero latency and fast concurrent operations
 let dbCache = null;
 
+function roundWeightage(value) {
+  return Math.round(Number(value) * 100) / 100;
+}
+
+function coerceWeightage(value) {
+  const numericWeightage = Number(value);
+  return Number.isFinite(numericWeightage) ? roundWeightage(numericWeightage) : null;
+}
+
+function getGoalWeightageTotal(goals, employeeId, excludeGoalId = null) {
+  return (goals || []).reduce((sum, goal) => {
+    if (String(goal.employee_id) !== String(employeeId)) {
+      return sum;
+    }
+
+    if (excludeGoalId !== null && String(goal.id) === String(excludeGoalId)) {
+      return sum;
+    }
+
+    return sum + Number(goal.weightage || 0);
+  }, 0);
+}
+
+function normalizeGoalWeightages(goals) {
+  const byEmployee = new Map();
+
+  (goals || []).forEach((goal) => {
+    const employeeKey = String(goal.employee_id || '');
+    if (!byEmployee.has(employeeKey)) {
+      byEmployee.set(employeeKey, []);
+    }
+    byEmployee.get(employeeKey).push(goal);
+  });
+
+  let changed = false;
+
+  byEmployee.forEach((employeeGoals) => {
+    const total = employeeGoals.reduce((sum, goal) => sum + Number(goal.weightage || 0), 0);
+
+    if (employeeGoals.length > 0 && total > 100.0001) {
+      const baseWeightage = Math.floor((100 / employeeGoals.length) * 100) / 100;
+      let remainder = roundWeightage(100 - baseWeightage * employeeGoals.length);
+
+      employeeGoals.forEach((goal, index) => {
+        const normalizedWeightage = index === employeeGoals.length - 1
+          ? roundWeightage(baseWeightage + remainder)
+          : baseWeightage;
+
+        if (Number(goal.weightage) !== normalizedWeightage) {
+          goal.weightage = normalizedWeightage;
+          changed = true;
+        }
+      });
+    }
+  });
+
+  return changed;
+}
+
+function validateGoalWeightage(db, goal, excludeGoalId = null) {
+  const employeeId = goal.employee_id;
+  if (!employeeId) {
+    throw new Error('employee_id is required');
+  }
+
+  const weightage = coerceWeightage(goal.weightage);
+  if (weightage === null) {
+    throw new Error('Weightage must be a number');
+  }
+
+  if (weightage <= 0 || weightage > 100) {
+    throw new Error('Weightage must be between 1 and 100');
+  }
+
+  const currentTotal = getGoalWeightageTotal(db.goals || [], employeeId, excludeGoalId);
+  if (currentTotal + weightage > 100.0001) {
+    const remaining = roundWeightage(Math.max(0, 100 - currentTotal));
+    throw new Error(`Weightage exceeds 100% for this employee. ${remaining}% remaining.`);
+  }
+
+  return weightage;
+}
+
 function loadDb() {
   if (dbCache) return dbCache;
   
@@ -29,6 +112,11 @@ function loadDb() {
           feedbacks: []
         };
         dbCache = { ...dbCache, ...JSON.parse(data) };
+
+        if (normalizeGoalWeightages(dbCache.goals)) {
+          saveDb(dbCache);
+        }
+
         return dbCache;
       }
     } catch (error) {
@@ -98,10 +186,12 @@ export function getGoals(employeeId) {
 
 export function createGoal(goal) {
   const db = loadDb();
+  const weightage = validateGoalWeightage(db, goal);
   const newGoal = {
     id: goal.id || `goal-uuid-${Date.now()}`,
     created_at: new Date().toISOString(),
-    ...goal
+    ...goal,
+    weightage
   };
   db.goals.push(newGoal);
   saveDb(db);
@@ -178,7 +268,13 @@ export function updateGoal(id, updates) {
   const db = loadDb();
   const index = db.goals.findIndex(g => g.id === id);
   if (index !== -1) {
-    db.goals[index] = { ...db.goals[index], ...updates };
+    const nextGoal = { ...db.goals[index], ...updates };
+
+    if (Object.prototype.hasOwnProperty.call(updates, 'weightage')) {
+      nextGoal.weightage = validateGoalWeightage(db, nextGoal, id);
+    }
+
+    db.goals[index] = nextGoal;
     saveDb(db);
     return db.goals[index];
   }

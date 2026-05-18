@@ -24,6 +24,7 @@ export default function AdminDashboard() {
   });
   const [escalations, setEscalations] = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
+  const [checkinDepartments, setCheckinDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   async function loadDashboardData() {
@@ -47,6 +48,13 @@ export default function AdminDashboard() {
       if (auditRes.ok) {
         const auditData = await auditRes.json();
         setAuditLogs(auditData);
+      }
+
+      // 4. Fetch check-in summary by department
+      const checkinsRes = await fetch('/api/checkins');
+      if (checkinsRes.ok) {
+        const checkinsData = await checkinsRes.json();
+        setCheckinDepartments(checkinsData.departments || []);
       }
     } catch (error) {
       console.error("Error loading dashboard data:", error);
@@ -167,12 +175,21 @@ export default function AdminDashboard() {
               <div className="card-title">Q1 check-in · by department</div>
             </div>
             <div className="ckin-grid">
-              <DeptCard name="Sales" val={91} color="var(--green)" />
-              <DeptCard name="Marketing" val={82} color="var(--green)" />
-              <DeptCard name="HR" val={100} color="var(--accent)" />
-              <DeptCard name="Operations" val={68} color="var(--amber)" />
-              <DeptCard name="Engineering" val={70} color="var(--blue)" />
-              <DeptCard name="Finance" val={44} color="var(--red)" />
+              {checkinDepartments.length === 0 ? (
+                <div className="text-[12.5px] text-[var(--text3)] p-3">No check-in department data available.</div>
+              ) : (
+                checkinDepartments.map((dept) => {
+                  let color = 'var(--red)';
+                  if (dept.rate >= 85) color = 'var(--green)';
+                  else if (dept.rate >= 70) color = 'var(--accent)';
+                  else if (dept.rate >= 50) color = 'var(--amber)';
+                  else if (dept.rate >= 35) color = 'var(--blue)';
+
+                  return (
+                    <DeptCard key={dept.name} name={dept.name} val={dept.rate} color={color} />
+                  );
+                })
+              )}
             </div>
           </div>
 

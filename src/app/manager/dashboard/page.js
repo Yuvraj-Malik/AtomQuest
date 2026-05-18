@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import TopBar from "@/components/layout/TopBar";
-import { supabase } from "@/lib/supabase";
 import { fetchManagerTeam } from "@/lib/data";
+import { getCurrentProfile } from "@/lib/clientProfile";
 import { 
   Users, 
   CheckSquare, 
@@ -21,19 +21,16 @@ export default function ManagerDashboard() {
   useEffect(() => {
     async function loadData() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
+        const profile = await getCurrentProfile();
+        if (profile?.id) {
           // 1. Fetch direct reports and goals
-          const data = await fetchManagerTeam(user.id);
+          const data = await fetchManagerTeam(profile.id);
           setTeam(data);
 
           // 2. Fetch completed check-ins count for the manager's direct reports
-          const { data: checkinsData, error: checkinsErr } = await supabase
-            .from('checkins')
-            .select('employee_id')
-            .eq('manager_id', user.id);
-
-          if (checkinsErr) throw checkinsErr;
+          const checkinsRes = await fetch(`/api/checkins?managerId=${encodeURIComponent(profile.id)}`);
+          if (!checkinsRes.ok) throw new Error('Failed to load check-ins');
+          const checkinsData = await checkinsRes.json();
 
           // Count how many of our direct reports have check-ins completed
           const checkedInIds = Array.from(new Set((checkinsData || []).map(c => c.employee_id)));
@@ -164,13 +161,20 @@ export default function ManagerDashboard() {
   const handleApprove = async (employeeId, employeeName) => {
     const toastId = toast.loading(`Approving goals for ${employeeName}...`);
     try {
-      const { error } = await supabase
-        .from('goals')
-        .update({ status: 'approved' })
-        .eq('employee_id', employeeId)
-        .eq('status', 'submitted');
+      const submitted = team
+        .find(member => member.id === employeeId)
+        ?.goals
+        ?.filter(g => g.status === 'submitted') || [];
 
-      if (error) throw error;
+      await Promise.all(
+        submitted.map(goal =>
+          fetch('/api/goals', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: goal.id, updates: { status: 'approved' } })
+          })
+        )
+      );
 
       // Update local state instantly
       setTeam(prevTeam => 
@@ -198,13 +202,20 @@ export default function ManagerDashboard() {
   const handleReturn = async (employeeId, employeeName) => {
     const toastId = toast.loading(`Returning goals to ${employeeName}...`);
     try {
-      const { error } = await supabase
-        .from('goals')
-        .update({ status: 'returned' })
-        .eq('employee_id', employeeId)
-        .eq('status', 'submitted');
+      const submitted = team
+        .find(member => member.id === employeeId)
+        ?.goals
+        ?.filter(g => g.status === 'submitted') || [];
 
-      if (error) throw error;
+      await Promise.all(
+        submitted.map(goal =>
+          fetch('/api/goals', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: goal.id, updates: { status: 'returned' } })
+          })
+        )
+      );
 
       // Update local state instantly
       setTeam(prevTeam => 

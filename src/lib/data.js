@@ -7,10 +7,25 @@ import {
   getAuditLogs 
 } from './backendDb';
 
+const isBrowser = typeof window !== 'undefined';
+
+async function fetchJson(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}`);
+  }
+  return res.json();
+}
+
 /**
  * Fetches the currently active goal cycle.
  */
 export async function fetchActiveCycle() {
+  if (isBrowser) {
+    const cycles = await fetchJson('/api/cycles');
+    return cycles.find(c => c.is_active) || null;
+  }
+
   const cycles = getCycles();
   return cycles.find(c => c.is_active) || null;
 }
@@ -19,6 +34,11 @@ export async function fetchActiveCycle() {
  * Fetches all goals for a specific employee.
  */
 export async function fetchEmployeeGoals(userId) {
+  if (isBrowser) {
+    const qs = userId ? `?employeeId=${encodeURIComponent(userId)}` : '';
+    return fetchJson(`/api/goals${qs}`);
+  }
+
   return getGoals(userId);
 }
 
@@ -26,6 +46,11 @@ export async function fetchEmployeeGoals(userId) {
  * Fetches the team members and their goal status for a manager.
  */
 export async function fetchManagerTeam(managerId) {
+  if (isBrowser) {
+    const qs = `?managerId=${encodeURIComponent(managerId)}`;
+    return fetchJson(`/api/manager/team${qs}`);
+  }
+
   // 1. Fetch direct report profiles
   const profiles = getProfiles();
   const members = profiles.filter(p => p.manager_id === managerId);
@@ -45,6 +70,10 @@ export async function fetchManagerTeam(managerId) {
  * Fetches org-wide statistics for the admin dashboard.
  */
 export async function fetchAdminStats() {
+  if (isBrowser) {
+    return fetchJson('/api/stats');
+  }
+
   const activeCycle = await fetchActiveCycle();
   const profiles = getProfiles();
   const employees = profiles.filter(p => p.role === 'employee');
@@ -68,5 +97,9 @@ export async function fetchAdminStats() {
  * Fetches the user profile by ID.
  */
 export async function fetchUserProfile(userId) {
+  if (isBrowser) {
+    return fetchJson(`/api/profiles?id=${encodeURIComponent(userId)}`);
+  }
+
   return getProfileById(userId);
 }

@@ -11,8 +11,13 @@ export async function POST(request) {
       return NextResponse.json({ error: 'title and employeeIds[] required' }, { status: 400 });
     }
 
+    const normalizedWeightage = Number(weightage);
+    if (!Number.isFinite(normalizedWeightage) || normalizedWeightage <= 0 || normalizedWeightage > 100) {
+      return NextResponse.json({ error: 'weightage must be between 1 and 100' }, { status: 400 });
+    }
+
     const created = employeeIds.map(empId => {
-      const goal = createGoal({ title, description, target_value, weightage, employee_id: empId, status: 'approved' });
+      const goal = createGoal({ title, description, target_value, weightage: normalizedWeightage, employee_id: empId, status: 'approved' });
       const profile = getProfileById(empId);
       const name = profile ? profile.name : empId;
       addAuditLog('Manager', `Pushed shared goal '${title}' to ${name}`, 'Created');

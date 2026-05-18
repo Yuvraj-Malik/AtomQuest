@@ -1,15 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, XCircle, MessageSquare, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  XCircle,
+  MessageSquare,
+  Loader2,
+  Sparkles,
+  Target,
+  Clock3,
+  ShieldCheck,
+  AlertTriangle
+} from "lucide-react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
 import { fetchUserProfile, fetchEmployeeGoals } from "@/lib/data";
 
 export default function ManagerGoalReview({ params }) {
-  const router = useRouter();
   const [employee, setEmployee] = useState(null);
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,12 +43,12 @@ export default function ManagerGoalReview({ params }) {
     const status = action === 'approve' ? 'approved' : 'returned';
     const toastId = toast.loading(`${action === 'approve' ? 'Approving' : 'Returning'} goal...`);
     try {
-      const { error } = await supabase
-        .from('goals')
-        .update({ status })
-        .eq('id', goalId);
-
-      if (error) throw error;
+      const res = await fetch('/api/goals', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: goalId, updates: { status } })
+      });
+      if (!res.ok) throw new Error('Failed to update goal status');
 
       // Update local state in real-time
       setGoals(prevGoals =>
@@ -76,25 +84,70 @@ export default function ManagerGoalReview({ params }) {
     );
   }
 
+  const approvedCount = goals.filter(g => g.status === 'approved').length;
+  const submittedCount = goals.filter(g => g.status === 'submitted').length;
+  const returnedCount = goals.filter(g => g.status === 'returned').length;
+  const totalWeightage = goals.reduce((sum, g) => sum + Number(g.weightage || 0), 0);
+
+  const averageProgress = goals.length
+    ? Math.round(
+        goals.reduce((sum, goal) => {
+          const score = Number(goal.achievements?.[0]?.computed_score || 0);
+          return sum + score;
+        }, 0) / goals.length
+      )
+    : 0;
+
   return (
-  <div>
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex items-center gap-4">
-          <Link href="/manager/team">
-            <button className="enterprise-btn-secondary px-2.5 py-1.5 rounded-md" title="Back to My Team">
-              <ArrowLeft size={16} />
-            </button>
-          </Link>
-          <div>
-            <h2 className="text-[24px] font-semibold text-primary">Review Goals: {employee.name || employee.email}</h2>
-            <p className="text-[14px] text-secondary mt-1">
-              {employee.department || 'Direct Report'} Department • FY 2025-26
-            </p>
+    <main className="content space-y-6">
+      <div className="enterprise-card relative overflow-hidden">
+        <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-[radial-gradient(circle,rgba(200,240,96,0.18)_0%,rgba(200,240,96,0.02)_58%,transparent_75%)] pointer-events-none" />
+
+        <div className="relative z-[1]">
+          <div className="flex items-start justify-between gap-4 mb-5">
+            <div className="flex items-start gap-3">
+              <Link href="/manager/team">
+                <button className="enterprise-btn-secondary px-2.5 py-1.5 rounded-md" title="Back to My Team">
+                  <ArrowLeft size={16} />
+                </button>
+              </Link>
+
+              <div>
+                <h2 className="text-[28px] font-semibold tracking-tight text-primary flex items-center gap-2">
+                  <Sparkles className="w-6 h-6 text-[var(--accent)]" /> Review Goals: {employee.name || employee.email}
+                </h2>
+                <p className="text-[14px] text-secondary mt-1">
+                  {employee.designation || 'Direct Report'} · {employee.department || 'Team'} · {employee.location || 'Location not set'}
+                </p>
+              </div>
+            </div>
+
+            <span className="badge badge-accent">Q1 FY 2026-27</span>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-4">
+            <div className="rounded-lg border border-[var(--border)] bg-[var(--surface2)] px-3 py-2.5">
+              <div className="text-[11px] uppercase tracking-[0.08em] text-secondary">Total Goals</div>
+              <div className="text-[20px] font-semibold text-primary mt-1 flex items-center gap-2"><Target className="w-4 h-4 text-[var(--blue)]" />{goals.length}</div>
+            </div>
+            <div className="rounded-lg border border-[var(--border)] bg-[var(--surface2)] px-3 py-2.5">
+              <div className="text-[11px] uppercase tracking-[0.08em] text-secondary">Approved</div>
+              <div className="text-[20px] font-semibold text-primary mt-1 flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-[var(--green)]" />{approvedCount}</div>
+            </div>
+            <div className="rounded-lg border border-[var(--border)] bg-[var(--surface2)] px-3 py-2.5">
+              <div className="text-[11px] uppercase tracking-[0.08em] text-secondary">Avg Progress</div>
+              <div className="text-[20px] font-semibold text-primary mt-1 flex items-center gap-2"><Clock3 className="w-4 h-4 text-[var(--amber)]" />{averageProgress}%</div>
+            </div>
+            <div className="rounded-lg border border-[var(--border)] bg-[var(--surface2)] px-3 py-2.5">
+              <div className="text-[11px] uppercase tracking-[0.08em] text-secondary">Weightage</div>
+              <div className="text-[20px] font-semibold text-primary mt-1 flex items-center gap-2">
+                <AlertTriangle className={`w-4 h-4 ${totalWeightage === 100 ? 'text-[var(--green)]' : 'text-[var(--red)]'}`} />
+                {totalWeightage}%
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      
-      <div className="h-[1px] bg-border w-full mb-8" />
 
       {goals.length === 0 ? (
         <div className="enterprise-card text-center py-16">
@@ -103,31 +156,50 @@ export default function ManagerGoalReview({ params }) {
       ) : (
         <div className="space-y-6">
           {goals.map((goal) => (
-            <div key={goal.id} className="enterprise-card">
-              <div className="flex justify-between items-start mb-6">
-                <div>
+            <div key={goal.id} className="enterprise-card border-[var(--border)] hover:border-[var(--accent-border)]">
+              <div className="flex justify-between items-start gap-4 mb-5">
+                <div className="min-w-0">
                   <span className="text-[11px] uppercase tracking-wider text-secondary font-medium block mb-2">
                     {goal.thrust_area || 'Thrust Area'}
                   </span>
-                  <h3 className="text-[18px] font-semibold text-primary">{goal.title}</h3>
+                  <h3 className="text-[20px] font-semibold text-primary leading-[1.3]">{goal.title}</h3>
+                  {goal.description ? (
+                    <p className="text-[13px] text-secondary mt-2 max-w-[78ch] leading-relaxed">{goal.description}</p>
+                  ) : null}
                 </div>
                 <span className={`status-badge ${goal.status}`}>{goal.status}</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-8 mb-8">
-                <div>
-                  <label className="text-[11px] uppercase tracking-wider text-secondary font-medium block mb-1">Target</label>
-                  <div className="font-mono text-[15px] text-primary">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                <div className="rounded-lg border border-[var(--border)] bg-[var(--surface2)] p-3">
+                  <label className="text-[10px] uppercase tracking-wider text-secondary font-medium block mb-1">Target</label>
+                  <div className="font-mono text-[14px] text-primary">
                     {goal.target_value ? `${goal.target_value}` : goal.target_date ? `By ${new Date(goal.target_date).toLocaleDateString()}` : 'No target set'}
                   </div>
                 </div>
-                <div>
-                  <label className="text-[11px] uppercase tracking-wider text-secondary font-medium block mb-1">Weightage</label>
-                  <div className="font-mono text-[15px] text-primary">{goal.weightage}%</div>
+
+                <div className="rounded-lg border border-[var(--border)] bg-[var(--surface2)] p-3">
+                  <label className="text-[10px] uppercase tracking-wider text-secondary font-medium block mb-1">Weightage</label>
+                  <div className="font-mono text-[14px] text-primary">{goal.weightage}%</div>
+                </div>
+
+                <div className="rounded-lg border border-[var(--border)] bg-[var(--surface2)] p-3">
+                  <label className="text-[10px] uppercase tracking-wider text-secondary font-medium block mb-1">Current Progress</label>
+                  <div className="font-mono text-[14px] text-primary">{Number(goal.achievements?.[0]?.computed_score || 0)}%</div>
                 </div>
               </div>
 
-              <div className="flex gap-3 pt-6 border-t border-border">
+              <div className="h-[6px] rounded-full bg-[var(--surface3)] overflow-hidden mb-6">
+                <div
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${Math.min(100, Math.max(0, Number(goal.achievements?.[0]?.computed_score || 0)))}%`,
+                    background: goal.status === 'approved' ? 'var(--green)' : goal.status === 'returned' ? 'var(--red)' : 'var(--accent)'
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-3 pt-5 border-t border-border">
                 <button 
                   onClick={() => handleAction(goal.id, 'approve')}
                   className="tb-btn tb-btn-primary flex items-center gap-2"
@@ -158,6 +230,6 @@ export default function ManagerGoalReview({ params }) {
           ))}
         </div>
       )}
-    </div>
+    </main>
   );
 }

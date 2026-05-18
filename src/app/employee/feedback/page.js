@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TopBar from "@/components/layout/TopBar";
-import { supabase } from "@/lib/supabase";
+import { getCurrentProfile } from "@/lib/clientProfile";
 import { Loader2 } from "lucide-react";
 
 export default function EmployeeFeedbackPage() {
@@ -12,8 +12,8 @@ export default function EmployeeFeedbackPage() {
   useEffect(() => {
     async function load() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        const employeeId = user?.id;
+        const profile = await getCurrentProfile();
+        const employeeId = profile?.id;
         const url = employeeId ? `/api/feedbacks?employeeId=${employeeId}` : `/api/feedbacks`;
         const res = await fetch(url);
         if (res.ok) {

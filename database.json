@@ -7,23 +7,24 @@
       "email": "admin@demo.com",
       "manager_id": null,
       "designation": "Talent Operations Admin",
+      "department": "People Operations",
       "location": "Mumbai, India",
       "phone": "+91 98765 43210",
-      "bio": "Managing enterprise-wide performance and execution tracking since 2022.",
+      "bio": "Owns enterprise performance governance, audit readiness, and cycle compliance.",
       "tenure": "4 years",
-      "avatar": "SA"
+      "avatar": "AO"
     },
     {
       "id": "manager-uuid-2222",
       "role": "manager",
       "name": "Rahul Sharma",
-      "email": "rahul@demo.com",
+      "email": "manager@demo.com",
       "manager_id": "admin-uuid-1111",
       "designation": "Director of Product",
       "department": "Product",
       "location": "Pune, India",
       "phone": "+91 98123 45678",
-      "bio": "Leading product design, analytics, and scaling efforts for core platforms.",
+      "bio": "Leads product planning, customer impact metrics, and roadmap execution.",
       "tenure": "3 years",
       "avatar": "RS"
     },
@@ -37,7 +38,7 @@
       "department": "Engineering",
       "location": "Bengaluru, India",
       "phone": "+91 97654 32109",
-      "bio": "Driving technical architecture, quality engineering, and agile operations.",
+      "bio": "Drives engineering quality, reliability, and release governance.",
       "tenure": "5 years",
       "avatar": "SM"
     },
@@ -45,13 +46,13 @@
       "id": "employee-uuid-4444",
       "role": "employee",
       "name": "Aryan Kumar",
-      "email": "aryan@demo.com",
+      "email": "employee@demo.com",
       "manager_id": "manager-uuid-2222",
       "designation": "Product Designer",
       "department": "Product",
       "location": "Pune, India",
       "phone": "+91 95555 12345",
-      "bio": "Creating premium glassmorphic components and elegant micro-interactions.",
+      "bio": "Owns interaction design, UX consistency, and usability experiments.",
       "tenure": "2 years",
       "avatar": "AK"
     },
@@ -65,7 +66,7 @@
       "department": "Product",
       "location": "Pune, India",
       "phone": "+91 94444 54321",
-      "bio": "Formulating go-to-market roadmaps and conducting competitive surveys.",
+      "bio": "Manages market research, persona validation, and launch-readiness artifacts.",
       "tenure": "1 year",
       "avatar": "NP"
     },
@@ -79,7 +80,7 @@
       "department": "Product",
       "location": "Pune, India",
       "phone": "+91 93333 67890",
-      "bio": "Deriving user behavior patterns and setting performance analytics benchmarks.",
+      "bio": "Builds telemetry views, adoption cohorts, and KPI diagnostics.",
       "tenure": "2 years",
       "avatar": "VS"
     },
@@ -93,7 +94,7 @@
       "department": "Engineering",
       "location": "Bengaluru, India",
       "phone": "+91 92222 98765",
-      "bio": "Translating wireframes into responsive, state-managed Web interfaces.",
+      "bio": "Builds React interfaces with accessibility and performance constraints.",
       "tenure": "3 years",
       "avatar": "MS"
     },
@@ -107,7 +108,7 @@
       "department": "Engineering",
       "location": "Bengaluru, India",
       "phone": "+91 91111 24680",
-      "bio": "Designing highly scalable REST route handlers, DB APIs, and security models.",
+      "bio": "Builds APIs, hardens schemas, and optimizes query plans.",
       "tenure": "2 years",
       "avatar": "AR"
     },
@@ -121,7 +122,7 @@
       "department": "Engineering",
       "location": "Bengaluru, India",
       "phone": "+91 90000 13579",
-      "bio": "Managing CI/CD build scripts, server environments, and cloud infrastructure.",
+      "bio": "Owns CI/CD reliability, deployment automation, and infra observability.",
       "tenure": "3 years",
       "avatar": "RD"
     },
@@ -135,73 +136,642 @@
       "department": "Engineering",
       "location": "Bengaluru, India",
       "phone": "+91 89999 97531",
-      "bio": "Running automated E2E browser checks and validating system tolerances.",
+      "bio": "Owns regression strategy, release sign-off quality gates, and defect triage.",
       "tenure": "1 year",
       "avatar": "KS"
     }
   ],
   "goals": [
     {
-      "id": "goal-uuid-1",
+      "id": "goal-ak-q3-1",
       "employee_id": "employee-uuid-4444",
-      "title": "Complete Q1 design system specs",
-      "description": "Build out standard HSL color palettes and connected design tokens.",
-      "status": "submitted",
-      "weightage": 40,
-      "progress": 80,
-      "created_at": "2026-05-10T12:00:00Z"
-    },
-    {
-      "id": "goal-uuid-2",
-      "employee_id": "employee-uuid-4444",
-      "title": "Improve mobile loading speed",
-      "description": "Optimize high-resolution asset loading and responsive flex boxes.",
-      "status": "submitted",
-      "weightage": 30,
-      "progress": 50,
-      "created_at": "2026-05-11T12:00:00Z"
-    },
-    {
-      "id": "goal-uuid-3",
-      "employee_id": "employee-uuid-5555",
-      "title": "Formulate NPS feedback report",
-      "description": "Collect product review results from initial user trials.",
+      "cycle_id": "cycle-q3-25-26",
+      "title": "Launch design token v2",
+      "description": "Standardize token naming and improve cross-platform parity.",
+      "thrust_area": "Efficiency",
+      "target_value": "100% component coverage",
+      "uom": "pct",
       "status": "draft",
-      "weightage": 50,
-      "progress": 10,
-      "created_at": "2026-05-12T12:00:00Z"
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q3",
+          "progress_status": "completed",
+          "computed_score": 92
+        }
+      ],
+      "created_at": "2025-10-05T10:00:00Z",
+      "updated_at": "2025-12-28T10:00:00Z"
     },
     {
-      "id": "goal-uuid-4",
-      "employee_id": "employee-uuid-7777",
-      "title": "Optimize landing page responsive layout",
-      "description": "Implement fluid CSS grid containers and custom animation keyframes.",
+      "id": "goal-ak-q4-1",
+      "employee_id": "employee-uuid-4444",
+      "cycle_id": "cycle-q4-25-26",
+      "title": "Reduce prototype handoff defects",
+      "description": "Cut handoff clarifications through design specs and acceptance notes.",
+      "thrust_area": "Quality",
+      "target_value": "< 5 defects sprint",
+      "uom": "nx",
+      "status": "draft",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q4",
+          "progress_status": "completed",
+          "computed_score": 88
+        }
+      ],
+      "created_at": "2026-01-08T10:00:00Z",
+      "updated_at": "2026-03-29T10:00:00Z"
+    },
+    {
+      "id": "goal-ak-q1-1",
+      "employee_id": "employee-uuid-4444",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Improve mobile usability score",
+      "description": "Raise SUS score through checkout journey simplification.",
+      "thrust_area": "Customer Experience",
+      "target_value": "SUS 82+",
+      "uom": "nm",
+      "status": "submitted",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 72
+        }
+      ],
+      "created_at": "2026-04-08T10:00:00Z",
+      "updated_at": "2026-05-16T10:00:00Z"
+    },
+    {
+      "id": "goal-ak-q1-2",
+      "employee_id": "employee-uuid-4444",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Create onboarding UX playbook",
+      "description": "Document patterns for first-run experience and empty states.",
+      "thrust_area": "Learning & Development",
+      "target_value": "1 published playbook",
+      "uom": "tl",
       "status": "approved",
-      "weightage": 60,
-      "progress": 90,
-      "created_at": "2026-05-13T12:00:00Z"
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 64
+        }
+      ],
+      "created_at": "2026-04-10T10:00:00Z",
+      "updated_at": "2026-05-17T10:00:00Z"
+    },
+    {
+      "id": "goal-np-q3-1",
+      "employee_id": "employee-uuid-5555",
+      "cycle_id": "cycle-q3-25-26",
+      "title": "Complete competitor pricing map",
+      "description": "Map top 10 competitor bundles and pricing tiers.",
+      "thrust_area": "Market Expansion",
+      "target_value": "10 competitor profiles",
+      "uom": "nm",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q3",
+          "progress_status": "completed",
+          "computed_score": 90
+        }
+      ],
+      "created_at": "2025-10-06T10:00:00Z",
+      "updated_at": "2025-12-30T10:00:00Z"
+    },
+    {
+      "id": "goal-np-q4-1",
+      "employee_id": "employee-uuid-5555",
+      "cycle_id": "cycle-q4-25-26",
+      "title": "Publish launch readiness rubric",
+      "description": "Introduce Go/No-Go checklist across release trains.",
+      "thrust_area": "Compliance",
+      "target_value": "100% release usage",
+      "uom": "pct",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q4",
+          "progress_status": "completed",
+          "computed_score": 86
+        }
+      ],
+      "created_at": "2026-01-05T10:00:00Z",
+      "updated_at": "2026-03-25T10:00:00Z"
+    },
+    {
+      "id": "goal-np-q1-1",
+      "employee_id": "employee-uuid-5555",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Improve NPS survey completion",
+      "description": "Increase post-release survey response across product modules.",
+      "thrust_area": "Customer Experience",
+      "target_value": "35% response rate",
+      "uom": "nm",
+      "status": "returned",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 52
+        }
+      ],
+      "created_at": "2026-04-07T10:00:00Z",
+      "updated_at": "2026-05-14T10:00:00Z"
+    },
+    {
+      "id": "goal-np-q1-2",
+      "employee_id": "employee-uuid-5555",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Validate two new user personas",
+      "description": "Run interviews and finalize decision rubric for GTM teams.",
+      "thrust_area": "Market Expansion",
+      "target_value": "2 approved personas",
+      "uom": "nm",
+      "status": "draft",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "at_risk",
+          "computed_score": 34
+        }
+      ],
+      "created_at": "2026-04-09T10:00:00Z",
+      "updated_at": "2026-05-18T08:00:00Z"
+    },
+    {
+      "id": "goal-vs-q3-1",
+      "employee_id": "employee-uuid-6666",
+      "cycle_id": "cycle-q3-25-26",
+      "title": "Ship retention cohort dashboard",
+      "description": "Create retention breakdown by industry and acquisition channel.",
+      "thrust_area": "Analytics",
+      "target_value": "Dashboard live",
+      "uom": "tl",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q3",
+          "progress_status": "completed",
+          "computed_score": 89
+        }
+      ],
+      "created_at": "2025-10-03T10:00:00Z",
+      "updated_at": "2025-12-26T10:00:00Z"
+    },
+    {
+      "id": "goal-vs-q4-1",
+      "employee_id": "employee-uuid-6666",
+      "cycle_id": "cycle-q4-25-26",
+      "title": "Standardize KPI definitions",
+      "description": "Align product metrics with finance-approved glossary.",
+      "thrust_area": "Compliance",
+      "target_value": "30 KPIs standardized",
+      "uom": "nm",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q4",
+          "progress_status": "completed",
+          "computed_score": 94
+        }
+      ],
+      "created_at": "2026-01-10T10:00:00Z",
+      "updated_at": "2026-03-30T10:00:00Z"
+    },
+    {
+      "id": "goal-vs-q1-1",
+      "employee_id": "employee-uuid-6666",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Launch feature adoption signal",
+      "description": "Detect low-usage modules and trigger product follow-ups.",
+      "thrust_area": "Revenue Growth",
+      "target_value": "Signal for 8 modules",
+      "uom": "nm",
+      "status": "submitted",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 68
+        }
+      ],
+      "created_at": "2026-04-06T10:00:00Z",
+      "updated_at": "2026-05-15T10:00:00Z"
+    },
+    {
+      "id": "goal-vs-q1-2",
+      "employee_id": "employee-uuid-6666",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Reduce report generation latency",
+      "description": "Optimize analytics query plans and materialized views.",
+      "thrust_area": "Efficiency",
+      "target_value": "< 4 sec median",
+      "uom": "nx",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 76
+        }
+      ],
+      "created_at": "2026-04-11T10:00:00Z",
+      "updated_at": "2026-05-18T06:00:00Z"
+    },
+    {
+      "id": "goal-ms-q3-1",
+      "employee_id": "employee-uuid-7777",
+      "cycle_id": "cycle-q3-25-26",
+      "title": "Improve Lighthouse performance",
+      "description": "Lift mobile performance score on 4 business-critical pages.",
+      "thrust_area": "Performance",
+      "target_value": "Lighthouse 90+",
+      "uom": "nm",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q3",
+          "progress_status": "completed",
+          "computed_score": 87
+        }
+      ],
+      "created_at": "2025-10-08T10:00:00Z",
+      "updated_at": "2025-12-24T10:00:00Z"
+    },
+    {
+      "id": "goal-ms-q4-1",
+      "employee_id": "employee-uuid-7777",
+      "cycle_id": "cycle-q4-25-26",
+      "title": "Roll out accessibility fixes",
+      "description": "Address keyboard navigation and screen-reader issues.",
+      "thrust_area": "Compliance",
+      "target_value": "0 critical a11y issues",
+      "uom": "z",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q4",
+          "progress_status": "completed",
+          "computed_score": 91
+        }
+      ],
+      "created_at": "2026-01-04T10:00:00Z",
+      "updated_at": "2026-03-27T10:00:00Z"
+    },
+    {
+      "id": "goal-ms-q1-1",
+      "employee_id": "employee-uuid-7777",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Ship new manager dashboard UI",
+      "description": "Deliver componentized manager workflow with responsive states.",
+      "thrust_area": "Delivery",
+      "target_value": "v1 released",
+      "uom": "tl",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 74
+        }
+      ],
+      "created_at": "2026-04-05T10:00:00Z",
+      "updated_at": "2026-05-17T10:00:00Z"
+    },
+    {
+      "id": "goal-ms-q1-2",
+      "employee_id": "employee-uuid-7777",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Cut frontend bundle size",
+      "description": "Reduce JS bundle by modular imports and dead-code cleanup.",
+      "thrust_area": "Performance",
+      "target_value": "-20% bundle size",
+      "uom": "nm",
+      "status": "submitted",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 61
+        }
+      ],
+      "created_at": "2026-04-13T10:00:00Z",
+      "updated_at": "2026-05-16T10:00:00Z"
+    },
+    {
+      "id": "goal-ar-q3-1",
+      "employee_id": "employee-uuid-8888",
+      "cycle_id": "cycle-q3-25-26",
+      "title": "Implement API idempotency keys",
+      "description": "Prevent duplicate writes for payment and provisioning flows.",
+      "thrust_area": "Reliability",
+      "target_value": "100% critical endpoints",
+      "uom": "pct",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q3",
+          "progress_status": "completed",
+          "computed_score": 93
+        }
+      ],
+      "created_at": "2025-10-02T10:00:00Z",
+      "updated_at": "2025-12-29T10:00:00Z"
+    },
+    {
+      "id": "goal-ar-q4-1",
+      "employee_id": "employee-uuid-8888",
+      "cycle_id": "cycle-q4-25-26",
+      "title": "Harden RBAC policy checks",
+      "description": "Move all authorization checks to service-level policy guards.",
+      "thrust_area": "Security",
+      "target_value": "0 auth bypass defects",
+      "uom": "z",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q4",
+          "progress_status": "completed",
+          "computed_score": 90
+        }
+      ],
+      "created_at": "2026-01-03T10:00:00Z",
+      "updated_at": "2026-03-28T10:00:00Z"
+    },
+    {
+      "id": "goal-ar-q1-1",
+      "employee_id": "employee-uuid-8888",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Add async processing for insights",
+      "description": "Move heavy summarization calls to queue workers.",
+      "thrust_area": "Scalability",
+      "target_value": "P95 < 2.5s",
+      "uom": "nx",
+      "status": "submitted",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 66
+        }
+      ],
+      "created_at": "2026-04-12T10:00:00Z",
+      "updated_at": "2026-05-16T10:00:00Z"
+    },
+    {
+      "id": "goal-ar-q1-2",
+      "employee_id": "employee-uuid-8888",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Introduce schema drift alerts",
+      "description": "Detect mismatch between runtime payload and contract.",
+      "thrust_area": "Quality",
+      "target_value": "24h drift alert SLA",
+      "uom": "tl",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 71
+        }
+      ],
+      "created_at": "2026-04-09T10:00:00Z",
+      "updated_at": "2026-05-18T07:00:00Z"
+    },
+    {
+      "id": "goal-rd-q3-1",
+      "employee_id": "employee-uuid-9999",
+      "cycle_id": "cycle-q3-25-26",
+      "title": "Stabilize build pipeline",
+      "description": "Reduce flaky build failures through deterministic caching.",
+      "thrust_area": "DevOps",
+      "target_value": "< 2% failure rate",
+      "uom": "nx",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q3",
+          "progress_status": "completed",
+          "computed_score": 88
+        }
+      ],
+      "created_at": "2025-10-07T10:00:00Z",
+      "updated_at": "2025-12-22T10:00:00Z"
+    },
+    {
+      "id": "goal-rd-q4-1",
+      "employee_id": "employee-uuid-9999",
+      "cycle_id": "cycle-q4-25-26",
+      "title": "Automate infra compliance scans",
+      "description": "Run nightly policy checks on production resources.",
+      "thrust_area": "Compliance",
+      "target_value": "100% critical resources",
+      "uom": "pct",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q4",
+          "progress_status": "completed",
+          "computed_score": 85
+        }
+      ],
+      "created_at": "2026-01-09T10:00:00Z",
+      "updated_at": "2026-03-26T10:00:00Z"
+    },
+    {
+      "id": "goal-rd-q1-1",
+      "employee_id": "employee-uuid-9999",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Improve release lead time",
+      "description": "Cut queue time between merge and deployment.",
+      "thrust_area": "Efficiency",
+      "target_value": "< 45 min median",
+      "uom": "nx",
+      "status": "submitted",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 58
+        }
+      ],
+      "created_at": "2026-04-04T10:00:00Z",
+      "updated_at": "2026-05-14T10:00:00Z"
+    },
+    {
+      "id": "goal-rd-q1-2",
+      "employee_id": "employee-uuid-9999",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Raise environment uptime",
+      "description": "Improve staging/preview uptime for product teams.",
+      "thrust_area": "Reliability",
+      "target_value": "99.8% uptime",
+      "uom": "nm",
+      "status": "returned",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "at_risk",
+          "computed_score": 42
+        }
+      ],
+      "created_at": "2026-04-15T10:00:00Z",
+      "updated_at": "2026-05-17T10:00:00Z"
+    },
+    {
+      "id": "goal-ks-q3-1",
+      "employee_id": "employee-uuid-1010",
+      "cycle_id": "cycle-q3-25-26",
+      "title": "Expand E2E coverage",
+      "description": "Cover top 12 user flows with browser automation.",
+      "thrust_area": "Quality",
+      "target_value": "12 automated journeys",
+      "uom": "nm",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q3",
+          "progress_status": "completed",
+          "computed_score": 84
+        }
+      ],
+      "created_at": "2025-10-11T10:00:00Z",
+      "updated_at": "2025-12-20T10:00:00Z"
+    },
+    {
+      "id": "goal-ks-q4-1",
+      "employee_id": "employee-uuid-1010",
+      "cycle_id": "cycle-q4-25-26",
+      "title": "Reduce escaped defects",
+      "description": "Introduce release-level defect containment checks.",
+      "thrust_area": "Reliability",
+      "target_value": "< 3 escaped defects",
+      "uom": "nx",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q4",
+          "progress_status": "completed",
+          "computed_score": 83
+        }
+      ],
+      "created_at": "2026-01-12T10:00:00Z",
+      "updated_at": "2026-03-24T10:00:00Z"
+    },
+    {
+      "id": "goal-ks-q1-1",
+      "employee_id": "employee-uuid-1010",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Implement quality gate automation",
+      "description": "Block releases when critical quality checks fail.",
+      "thrust_area": "Compliance",
+      "target_value": "100% release gate adoption",
+      "uom": "pct",
+      "status": "submitted",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 63
+        }
+      ],
+      "created_at": "2026-04-03T10:00:00Z",
+      "updated_at": "2026-05-13T10:00:00Z"
+    },
+    {
+      "id": "goal-ks-q1-2",
+      "employee_id": "employee-uuid-1010",
+      "cycle_id": "cycle-q1-26-27",
+      "title": "Shrink flaky test backlog",
+      "description": "Stabilize unstable tests and root cause flaky behavior.",
+      "thrust_area": "Efficiency",
+      "target_value": "< 5 flaky suites",
+      "uom": "nx",
+      "status": "approved",
+      "weightage": 25,
+      "achievements": [
+        {
+          "quarter": "Q1",
+          "progress_status": "on_track",
+          "computed_score": 69
+        }
+      ],
+      "created_at": "2026-04-16T10:00:00Z",
+      "updated_at": "2026-05-18T05:30:00Z"
     }
   ],
   "escalations": [
     {
       "id": "esc-uuid-1",
-      "employee_id": "employee-uuid-4444",
-      "escalation_type": "approval_delayed",
-      "days_overdue": 7,
-      "resolved": true
+      "employee_id": "employee-uuid-5555",
+      "escalation_type": "goal_not_submitted",
+      "days_overdue": 4,
+      "resolved": false
     },
     {
       "id": "esc-uuid-2",
-      "employee_id": "employee-uuid-5555",
+      "employee_id": "employee-uuid-9999",
+      "escalation_type": "approval_delayed",
+      "days_overdue": 3,
+      "resolved": false
+    },
+    {
+      "id": "esc-uuid-3",
+      "employee_id": "employee-uuid-1010",
       "escalation_type": "goal_not_submitted",
-      "days_overdue": 5,
+      "days_overdue": 1,
       "resolved": true
     }
   ],
   "cycles": [
     {
-      "id": "cycle-uuid-1",
-      "name": "Q1 Performance Cycle",
+      "id": "cycle-q3-25-26",
+      "name": "Q3 FY 2025-26",
+      "is_active": false,
+      "start_date": "2025-10-01",
+      "end_date": "2025-12-31"
+    },
+    {
+      "id": "cycle-q4-25-26",
+      "name": "Q4 FY 2025-26",
+      "is_active": false,
+      "start_date": "2026-01-01",
+      "end_date": "2026-03-31"
+    },
+    {
+      "id": "cycle-q1-26-27",
+      "name": "Q1 FY 2026-27",
       "is_active": true,
       "start_date": "2026-04-01",
       "end_date": "2026-06-30"
@@ -209,53 +779,353 @@
   ],
   "audit_logs": [
     {
-      "id": "audit-uuid-1779091012820",
+      "id": "audit-uuid-1779105379115",
       "time": "Just now",
       "actor": "Admin",
-      "action": "Administratively bypassed and approved goals for **Aryan Kumar**",
+      "action": "Unlocked goal sheet for **Aryan Kumar**: **Reduce prototype handoff defects**",
+      "status": "Unlocked"
+    },
+    {
+      "id": "audit-uuid-1779105373544",
+      "time": "Just now",
+      "actor": "Admin",
+      "action": "Unlocked goal sheet for **Aryan Kumar**: **Launch design token v2**",
+      "status": "Unlocked"
+    },
+    {
+      "id": "audit-uuid-1779105285215",
+      "time": "Just now",
+      "actor": "Manager",
+      "action": "Added check-in comment for Aryan Kumar",
+      "status": "Created"
+    },
+    {
+      "id": "audit-1",
+      "time": "09:10 today",
+      "actor": "Rahul Sharma",
+      "action": "Approved goal sheet for **Aryan Kumar** in Q1 FY 2026-27",
       "status": "Approved"
     },
     {
-      "id": "audit-uuid-1779090141877",
-      "time": "Just now",
-      "actor": "Admin Operations",
-      "action": "Updated profile fields (Name: Admin Operations, Location: Mumbai, India, Bio: Managing enterprise-...) for **Admin Operations**",
-      "status": "Modified"
+      "id": "audit-2",
+      "time": "08:55 today",
+      "actor": "Rahul Sharma",
+      "action": "Returned goals to **Nisha Pillai** due to invalid weightage split",
+      "status": "Returned"
     },
     {
-      "id": "audit-uuid-1779089787825",
-      "time": "Just now",
-      "actor": "Admin",
-      "action": "Dispatched compliance nudge to **Nisha Pillai** for overdue goal not submitted",
+      "id": "audit-3",
+      "time": "Yesterday",
+      "actor": "Shreya Mehta",
+      "action": "Submitted escalation for **Rohan Das** on pending approval backlog",
+      "status": "Escalated"
+    },
+    {
+      "id": "audit-4",
+      "time": "Yesterday",
+      "actor": "Admin Operations",
+      "action": "Triggered compliance nudge for **Nisha Pillai**",
       "status": "Nudged"
     },
     {
-      "id": "audit-uuid-1779089707617",
-      "time": "Just now",
-      "actor": "System Admin",
-      "action": "Updated profile fields (Name: Admin Operations, Location: Mumbai, India, Bio: Managing enterprise-...) for **System Admin**",
-      "status": "Modified"
+      "id": "audit-5",
+      "time": "2 days ago",
+      "actor": "Admin Operations",
+      "action": "Verified Q4 FY 2025-26 closure sign-off for all departments",
+      "status": "Completed"
     },
     {
-      "id": "audit-uuid-1",
-      "time": "11:42 today",
-      "actor": "Priya Nair",
-      "action": "Approved 6 goals for **Aryan Kumar** — Revenue & Efficiency tracks",
+      "id": "audit-6",
+      "time": "3 days ago",
+      "actor": "Shreya Mehta",
+      "action": "Approved backend scalability goal for **Aditya Rao**",
       "status": "Approved"
     },
     {
-      "id": "audit-uuid-2",
-      "time": "10:15 today",
-      "actor": "Admin",
-      "action": "Unlocked goal #G-1042 for **Meera Singh** — target revised post lock",
+      "id": "audit-7",
+      "time": "4 days ago",
+      "actor": "Rahul Sharma",
+      "action": "Added check-in comment for **Vikram Singh**",
       "status": "Modified"
     },
     {
-      "id": "audit-uuid-3",
-      "time": "Yesterday",
-      "actor": "Raj Sharma",
-      "action": "Returned goals to **Nisha Pillai** — weightage validation error",
-      "status": "Returned"
+      "id": "audit-8",
+      "time": "Q4 closeout",
+      "actor": "Admin Operations",
+      "action": "Archived Q4 FY 2025-26 and activated Q1 FY 2026-27",
+      "status": "Modified"
+    }
+  ],
+  "checkins": [
+    {
+      "id": "checkin-ak-q3",
+      "employee_id": "employee-uuid-4444",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q3-25-26",
+      "quarter": "Q3",
+      "comment": "Completed design token migration and improved consistency.",
+      "completed_at": "2025-12-20T09:00:00Z"
+    },
+    {
+      "id": "checkin-ak-q4",
+      "employee_id": "employee-uuid-4444",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q4-25-26",
+      "quarter": "Q4",
+      "comment": "Good quality outcomes; improve cross-team review cadence.",
+      "completed_at": "2026-03-22T09:00:00Z"
+    },
+    {
+      "id": "checkin-ak-q1",
+      "employee_id": "employee-uuid-4444",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q1-26-27",
+      "quarter": "Q1",
+      "comment": "Strong progress in mobile UX; continue experimentation depth.",
+      "completed_at": "2026-05-17T09:00:00Z"
+    },
+    {
+      "id": "checkin-np-q3",
+      "employee_id": "employee-uuid-5555",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q3-25-26",
+      "quarter": "Q3",
+      "comment": "Research outputs are structured and business-relevant.",
+      "completed_at": "2025-12-18T09:00:00Z"
+    },
+    {
+      "id": "checkin-np-q4",
+      "employee_id": "employee-uuid-5555",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q4-25-26",
+      "quarter": "Q4",
+      "comment": "Launch rubric adoption was solid; speed up stakeholder alignment.",
+      "completed_at": "2026-03-20T09:00:00Z"
+    },
+    {
+      "id": "checkin-np-q1",
+      "employee_id": "employee-uuid-5555",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q1-26-27",
+      "quarter": "Q1",
+      "comment": "Goal sheet needs correction on weightage and measurable targets.",
+      "completed_at": "2026-05-15T09:00:00Z"
+    },
+    {
+      "id": "checkin-vs-q3",
+      "employee_id": "employee-uuid-6666",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q3-25-26",
+      "quarter": "Q3",
+      "comment": "Cohort analytics delivered strong product insights.",
+      "completed_at": "2025-12-21T09:00:00Z"
+    },
+    {
+      "id": "checkin-vs-q4",
+      "employee_id": "employee-uuid-6666",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q4-25-26",
+      "quarter": "Q4",
+      "comment": "Great KPI governance; maintain documentation freshness.",
+      "completed_at": "2026-03-23T09:00:00Z"
+    },
+    {
+      "id": "checkin-vs-q1",
+      "employee_id": "employee-uuid-6666",
+      "manager_id": "manager-uuid-2222",
+      "cycle_id": "cycle-q1-26-27",
+      "quarter": "Q1",
+      "comment": "Adoption signal work is on-track and visible to leadership.",
+      "completed_at": "2026-05-16T09:00:00Z"
+    },
+    {
+      "id": "checkin-ms-q3",
+      "employee_id": "employee-uuid-7777",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q3-25-26",
+      "quarter": "Q3",
+      "comment": "Frontend quality and performance trend improved steadily.",
+      "completed_at": "2025-12-17T09:00:00Z"
+    },
+    {
+      "id": "checkin-ms-q4",
+      "employee_id": "employee-uuid-7777",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q4-25-26",
+      "quarter": "Q4",
+      "comment": "A11y fixes were delivered with clear documentation.",
+      "completed_at": "2026-03-19T09:00:00Z"
+    },
+    {
+      "id": "checkin-ms-q1",
+      "employee_id": "employee-uuid-7777",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q1-26-27",
+      "quarter": "Q1",
+      "comment": "Dashboard rollout is healthy; bundle optimization still in progress.",
+      "completed_at": "2026-05-16T12:00:00Z"
+    },
+    {
+      "id": "checkin-ar-q3",
+      "employee_id": "employee-uuid-8888",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q3-25-26",
+      "quarter": "Q3",
+      "comment": "Backend reliability improvements reduced duplicate operations.",
+      "completed_at": "2025-12-19T09:00:00Z"
+    },
+    {
+      "id": "checkin-ar-q4",
+      "employee_id": "employee-uuid-8888",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q4-25-26",
+      "quarter": "Q4",
+      "comment": "Security hardening completed with no regressions.",
+      "completed_at": "2026-03-21T09:00:00Z"
+    },
+    {
+      "id": "checkin-ar-q1",
+      "employee_id": "employee-uuid-8888",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q1-26-27",
+      "quarter": "Q1",
+      "comment": "Async insight processing needs final load-test sign-off.",
+      "completed_at": "2026-05-17T11:00:00Z"
+    },
+    {
+      "id": "checkin-rd-q3",
+      "employee_id": "employee-uuid-9999",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q3-25-26",
+      "quarter": "Q3",
+      "comment": "Pipeline stability increased and deploy windows improved.",
+      "completed_at": "2025-12-15T09:00:00Z"
+    },
+    {
+      "id": "checkin-rd-q4",
+      "employee_id": "employee-uuid-9999",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q4-25-26",
+      "quarter": "Q4",
+      "comment": "Compliance scans are operational and well tracked.",
+      "completed_at": "2026-03-18T09:00:00Z"
+    },
+    {
+      "id": "checkin-rd-q1",
+      "employee_id": "employee-uuid-9999",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q1-26-27",
+      "quarter": "Q1",
+      "comment": "Lead time improving; uptime target currently at risk.",
+      "completed_at": "2026-05-14T12:30:00Z"
+    },
+    {
+      "id": "checkin-ks-q3",
+      "employee_id": "employee-uuid-1010",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q3-25-26",
+      "quarter": "Q3",
+      "comment": "E2E suite expansion gave better release confidence.",
+      "completed_at": "2025-12-16T09:00:00Z"
+    },
+    {
+      "id": "checkin-ks-q4",
+      "employee_id": "employee-uuid-1010",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q4-25-26",
+      "quarter": "Q4",
+      "comment": "Escaped defects reduced consistently across releases.",
+      "completed_at": "2026-03-17T09:00:00Z"
+    },
+    {
+      "id": "checkin-ks-q1",
+      "employee_id": "employee-uuid-1010",
+      "manager_id": "manager-uuid-3333",
+      "cycle_id": "cycle-q1-26-27",
+      "quarter": "Q1",
+      "comment": "Quality gate automation is progressing with stable outcomes.",
+      "completed_at": "2026-05-18T09:00:00Z"
+    }
+  ],
+  "feedbacks": [
+    {
+      "id": "fb-ak-1",
+      "employee_id": "employee-uuid-4444",
+      "from": "Rahul Sharma",
+      "comment": "Your UX recommendations are improving conversion quality.",
+      "created_at": "2026-05-05T10:00:00Z"
+    },
+    {
+      "id": "fb-np-1",
+      "employee_id": "employee-uuid-5555",
+      "from": "Rahul Sharma",
+      "comment": "Make targets more measurable before final submission.",
+      "created_at": "2026-05-11T10:00:00Z"
+    },
+    {
+      "id": "fb-vs-1",
+      "employee_id": "employee-uuid-6666",
+      "from": "Rahul Sharma",
+      "comment": "Excellent analytical framing and data storytelling.",
+      "created_at": "2026-05-10T10:00:00Z"
+    },
+    {
+      "id": "fb-ms-1",
+      "employee_id": "employee-uuid-7777",
+      "from": "Shreya Mehta",
+      "comment": "Great job balancing speed and UI quality.",
+      "created_at": "2026-05-08T10:00:00Z"
+    },
+    {
+      "id": "fb-ar-1",
+      "employee_id": "employee-uuid-8888",
+      "from": "Shreya Mehta",
+      "comment": "Strong API ownership; keep documenting architecture decisions.",
+      "created_at": "2026-05-09T10:00:00Z"
+    },
+    {
+      "id": "fb-rd-1",
+      "employee_id": "employee-uuid-9999",
+      "from": "Shreya Mehta",
+      "comment": "Push uptime mitigation plan as top priority this cycle.",
+      "created_at": "2026-05-12T10:00:00Z"
+    },
+    {
+      "id": "fb-ks-1",
+      "employee_id": "employee-uuid-1010",
+      "from": "Shreya Mehta",
+      "comment": "Quality gates are adding measurable value to release hygiene.",
+      "created_at": "2026-05-13T10:00:00Z"
+    }
+  ],
+  "checkin_comments": [
+    {
+      "id": "cmt-1",
+      "manager_id": "manager-uuid-2222",
+      "employee_id": "employee-uuid-4444",
+      "comment": "Please attach usability benchmark sources before final review.",
+      "created_at": "2026-05-16T08:00:00Z"
+    },
+    {
+      "id": "cmt-2",
+      "manager_id": "manager-uuid-2222",
+      "employee_id": "employee-uuid-5555",
+      "comment": "Weightage split currently exceeds expectations, revise to 100%.",
+      "created_at": "2026-05-16T08:30:00Z"
+    },
+    {
+      "id": "cmt-3",
+      "manager_id": "manager-uuid-3333",
+      "employee_id": "employee-uuid-9999",
+      "comment": "Need an uptime recovery runbook before next checkpoint.",
+      "created_at": "2026-05-17T09:20:00Z"
+    },
+    {
+      "id": "ccomment-1779105285215",
+      "created_at": "2026-05-18T11:54:45.215Z",
+      "manager_id": "manager-uuid-2222",
+      "employee_id": "employee-uuid-4444",
+      "comment": "This message is for just checking-in."
     }
   ]
 }

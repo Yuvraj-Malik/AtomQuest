@@ -2,20 +2,24 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
 import { fetchEmployeeGoals } from "@/lib/data";
+import { getCurrentProfile } from "@/lib/clientProfile";
 import { Loader2, Plus } from "lucide-react";
 
 export default function GoalsPage() {
   const [goals, setGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const totalWeightage = goals.reduce((sum, goal) => sum + Number(goal.weightage || 0), 0);
+  const approvedCount = goals.filter(goal => goal.status === 'approved').length;
+  const goalCount = goals.length;
+  const weightageBalanced = Math.abs(totalWeightage - 100) < 0.01;
 
   useEffect(() => {
     async function loadData() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const data = await fetchEmployeeGoals(user.id);
+        const profile = await getCurrentProfile();
+        if (profile?.id) {
+          const data = await fetchEmployeeGoals(profile.id);
           setGoals(data);
         }
       } catch (error) {
@@ -48,23 +52,23 @@ export default function GoalsPage() {
       <div className="grid grid-cols-4 gap-4 mb-6">
         <div className="stat-card">
           <div className="stat-label">Total Weightage</div>
-          <div className="stat-number">100%</div>
-          <div className="stat-description">Across 4 goals</div>
+          <div className="stat-number">{totalWeightage}%</div>
+          <div className="stat-description">Across {goalCount} goal{goalCount === 1 ? '' : 's'}</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Approved</div>
-          <div className="stat-number">4</div>
+          <div className="stat-number">{approvedCount}</div>
           <div className="stat-description">Locked for cycle</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Q1 Actuals</div>
-          <div className="stat-number">75%</div>
-          <div className="stat-description">Partially filled</div>
+          <div className="stat-number">{goalCount ? Math.round(goals.reduce((sum, goal) => sum + Number(goal.achievements?.[0]?.computed_score || 0), 0) / goalCount) : 0}%</div>
+          <div className="stat-description">Live from goal data</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Momentum</div>
-          <div className="stat-number">12d</div>
-          <div className="stat-description">Consistency streak</div>
+          <div className="stat-number">{weightageBalanced ? '12d' : 'Review'}</div>
+          <div className="stat-description">{weightageBalanced ? 'Consistency streak' : 'Weightage off balance'}</div>
         </div>
       </div>
 
@@ -95,7 +99,7 @@ export default function GoalsPage() {
                 
                 {/* 3. Meta Row */}
                 <div className="flex gap-4 text-[11px] text-[#555] mb-4">
-                  <span>Weight: <strong className="text-white font-mono">{goal.weightage}%</strong></span>
+                  <span>Weight: <strong className="text-white font-mono">{Number(goal.weightage || 0)}%</strong></span>
                   <span>Target: <strong className="text-white font-mono">{goal.target_value}</strong></span>
                 </div>
 

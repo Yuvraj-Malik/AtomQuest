@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TopBar from "@/components/layout/TopBar";
-import { supabase } from "@/lib/supabase";
+import { getCurrentProfile } from "@/lib/clientProfile";
 import { CheckSquare, Loader2 } from "lucide-react";
 
 export default function EmployeeCheckinsPage() {
@@ -11,15 +11,16 @@ export default function EmployeeCheckinsPage() {
 
   useEffect(() => {
     async function loadCheckins() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data, error } = await supabase
-          .from('checkins')
-          .select('*')
-          .eq('employee_id', user.id)
-          .order('completed_at', { ascending: false });
-        
-        if (!error) setCheckins(data || []);
+      const profile = await getCurrentProfile();
+      if (profile?.id) {
+        const res = await fetch(`/api/checkins?employeeId=${encodeURIComponent(profile.id)}`);
+        if (res.ok) {
+          const data = await res.json();
+          const sorted = (data || []).sort((a, b) => {
+            return new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime();
+          });
+          setCheckins(sorted);
+        }
       }
       setLoading(false);
     }
