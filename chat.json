@@ -1,0 +1,261 @@
+{
+  "conversations": [],
+  "messages": [
+    {
+      "id": "msg-1779118224766",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "XTYSAgYJ6MwOYhAdgmWc44D2Q+wEIka5M4hQwRa5YImy8unGTQNyeQvVH6FTqt51kIpkgurHGI/DtM8UjiNcnSrQSEIt7InxeWewvDrt6LoAjGjiOGmJa8Qec0zGfB9bmITP7TJHXuZ7PFGTHEA2YZvXEFpNZj5BQyNBFck=",
+      "content_type": "text",
+      "metadata": {
+        "iv": "M8Ppxk/gk1MyYByX",
+        "status": "read"
+      },
+      "created_at": "2026-05-18T15:30:24.785Z"
+    },
+    {
+      "id": "msg-1779118664668",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "1dRT6zhJdQJtkwTZCY6wFRMScaIf49+di9872BxAT3Km04TCbXsTdH5oWGBXIC4U",
+      "content_type": "text",
+      "metadata": {
+        "iv": "M5BFgfsCqcJOSP+E",
+        "status": "read"
+      },
+      "created_at": "2026-05-18T15:37:44.688Z"
+    },
+    {
+      "id": "msg-1779118688708",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "3yB8RXGklA7vZQBtScPhi4znuYhX3Tyg5mgsuRExEkrkN1hf6fw6X+JscsBrbTrXLPP/KR5AXIirqRZQ+7Lv3Yjk2yVoCdB/MC1CwQ==",
+      "content_type": "text",
+      "metadata": {
+        "iv": "5lzb+OtJ086mS4u5",
+        "status": "read"
+      },
+      "created_at": "2026-05-18T15:38:08.725Z"
+    },
+    {
+      "id": "msg-1779118890830",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "AvYAWfs/2kf6AEJi+8/YgUSFQsmDR8XWKqU6IjV3nBcRBRE/jVYddE5/jc2+XC8TtbHjeyxiDKQIHvY9RF128ggJQaUQY1kb2vrzUP76RIJgziwO1JORu9kE5wRUiME=",
+      "content_type": "text",
+      "metadata": {
+        "iv": "ZlHsP96c8cGIX7+p",
+        "status": "read"
+      },
+      "created_at": "2026-05-18T15:41:30.863Z"
+    },
+    {
+      "id": "msg-1779128105151",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "4JeOyAPmqMNXXNYt5CKDGL5V9WSH",
+      "content_type": "text",
+      "metadata": {
+        "iv": "eCiNo66lnkLWUL7A",
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:15:05.185Z"
+    },
+    {
+      "id": "msg-1779128235527",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "EiuapmrQxvW8kl+lxlrwFWN4ijBP",
+      "content_type": "text",
+      "metadata": {
+        "iv": "qE4RSD1yG9KE7Ftx",
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:17:15.877Z"
+    },
+    {
+      "id": "msg-1779128464204",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "yoo",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:21:04.243Z"
+    },
+    {
+      "id": "msg-1779128470840",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "noice",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:21:10.875Z"
+    },
+    {
+      "id": "msg-1779128497338",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "hello",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:21:37.367Z"
+    },
+    {
+      "id": "msg-1779128657442",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "lets test the dots replacement",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:24:17.476Z"
+    },
+    {
+      "id": "msg-1779128753476",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "so you test the dynamin working",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:25:53.512Z"
+    },
+    {
+      "id": "msg-1779128770386",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "received",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:26:10.419Z"
+    },
+    {
+      "id": "msg-1779128791002",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "not working, right?",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:26:31.041Z"
+    },
+    {
+      "id": "msg-1779128922684",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "is it working now?",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:28:42.705Z"
+    },
+    {
+      "id": "msg-1779128931449",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "noo",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:28:51.475Z"
+    },
+    {
+      "id": "msg-1779129050213",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "okay now?",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:30:50.247Z"
+    },
+    {
+      "id": "msg-1779129251246",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "manager-uuid-2222",
+      "ciphertext": "pools?",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:34:11.281Z"
+    },
+    {
+      "id": "msg-1779129259104",
+      "conversation_id": "direct:employee-uuid-4444-manager-uuid-2222",
+      "sender_id": "employee-uuid-4444",
+      "ciphertext": "yes it does bro",
+      "content_type": "text",
+      "metadata": {
+        "status": "read"
+      },
+      "created_at": "2026-05-18T18:34:19.138Z"
+    }
+  ],
+  "keys": [
+    {
+      "user_id": "employee-uuid-4444",
+      "public_key": "BN7tz+qCR0HbTmrl57gVBlS2LFVzULJVVUtxCCr9+cK0P9INBH5bornvwQrmKMNeBBwWmki62Ck/i12KFRnahDY=",
+      "created_at": "2026-05-18T12:29:09.850Z"
+    },
+    {
+      "user_id": "manager-uuid-2222",
+      "public_key": "BI1KTwbs0t4Xp73GEkWCXtFTX7BD3MWwPzQAp3zYBdbw7KwsehrxL4yq0UfkXm0f75TwCVid2OLIGVCQY8b74bc=",
+      "created_at": "2026-05-18T15:29:51.865Z"
+    },
+    {
+      "user_id": "admin-uuid-1111",
+      "public_key": "BAyIxy3U1z6okZ13HkKsbK3eCMYojdnfJO92MvJL4jmMXMmoaNHd8vMuVDQQOog7tw+yA6WCQ4OjX/umFzX7l3M=",
+      "created_at": "2026-05-18T15:29:51.866Z"
+    },
+    {
+      "user_id": "manager-uuid-3333",
+      "public_key": "BGkZJuTWEPm0bpTe1SBlG6oB2+OEbmp1HWIx9RLUDtIU/pUvcGZWsFcG04BsjNkRP/VDqaz36mHrLUywIy/jtE0=",
+      "created_at": "2026-05-18T15:29:51.888Z"
+    },
+    {
+      "user_id": "employee-uuid-5555",
+      "public_key": "BDkyd/husqqhA91OqG6ZLo/gMu+FK9AVHXQr+g587Arx5P/8NqGjGOjEkOB+n3XnaP2grBL5cFxeemTlPPtAhqI=",
+      "created_at": "2026-05-18T15:29:51.900Z"
+    },
+    {
+      "user_id": "employee-uuid-6666",
+      "public_key": "BAcXgUYP8b6VAjPuzWUjhPdeK0Gv7+z+ym3T2wfYBQKKtqvUY6bLwxzJd1540Q+F1yi/0b+IoXWm/VUiIQQ5irI=",
+      "created_at": "2026-05-18T15:29:51.920Z"
+    },
+    {
+      "user_id": "employee-uuid-7777",
+      "public_key": "BPkF0+rua8xqTT6fOdm5rLAh5HLlXLvEuZ2vwocDbnimMkI19stUfCKNDPbyPhNUsKrDGnDc43yF7tvG05g5AEI=",
+      "created_at": "2026-05-18T15:29:51.931Z"
+    },
+    {
+      "user_id": "employee-uuid-8888",
+      "public_key": "BFfLG9c1N1+wTc+UhBHbJsg2Fzievr3bF0u8Nye0lEPeqomj6ceDTwuKWZctHjoEV+gYBesVQjPugFVxKkmSfCw=",
+      "created_at": "2026-05-18T15:29:51.949Z"
+    },
+    {
+      "user_id": "employee-uuid-9999",
+      "public_key": "BAQRPwAV4etAaiHv013tce+CJTjLbMJJFa8gaEass0ZmOf4uyDDx+0+JKe6Tm75yiq0FYD+0ddz3UfVAFE6MWkw=",
+      "created_at": "2026-05-18T15:29:51.980Z"
+    },
+    {
+      "user_id": "employee-uuid-1010",
+      "public_key": "BBZM7l4XSxnRRHaJZokJ3h0T9UYvlc2LfSWNeT4RKBVjamXxSk31pYYcHs6yx4jlgJWZzd421HlCqhUHHKqjLTo=",
+      "created_at": "2026-05-18T15:29:51.996Z"
+    }
+  ]
+}

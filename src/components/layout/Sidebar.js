@@ -134,6 +134,9 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
           { group: 'Activity', items: [
             { name: 'Q1 check-in', href: '/employee/checkins', icon: 'M22 12h-4l-3 9L9 3l-3 9H2', badge: 'Due' },
             { name: 'Manager feedback', href: '/employee/feedback', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
+          ]},
+          { group: 'Communication', items: [
+            { name: 'Chat', href: '/chat', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' }
           ]}
         ];
       case 'manager':
@@ -146,6 +149,9 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
             { name: 'Pending approvals', href: '/manager/dashboard', icon: 'M9 11l3 3L22 4' },
             { name: 'Check-in comments', href: '/manager/comments', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
             { name: 'Push shared goal', href: '/manager/shared', icon: 'M12 5v14M5 12h14' },
+          ]}
+          ,{ group: 'Communication', items: [
+            { name: 'Chat', href: '/chat', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' }
           ]}
         ];
       case 'admin':
@@ -167,6 +173,9 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
           { group: 'Config', items: [
             { name: 'Cycle management', href: '/admin/cycles', icon: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v4l3 3' },
             { name: 'Goal unlock', href: '/admin/unlock', icon: 'M18 6L6 18M6 6l12 12' },
+          ]}
+          ,{ group: 'Communication', items: [
+            { name: 'Chat', href: '/chat', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' }
           ]}
         ];
       default:

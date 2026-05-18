@@ -71,6 +71,33 @@ function normalizeGoalWeightages(goals) {
   return changed;
 }
 
+function rebalanceEmployeeGoals(goals, employeeId, excludeGoalId = null, targetTotal = 100) {
+  const existing = (goals || []).filter(g => String(g.employee_id) === String(employeeId) && String(g.id) !== String(excludeGoalId));
+  const existingTotal = existing.reduce((s, g) => s + Number(g.weightage || 0), 0);
+
+  // Nothing to rebalance or nothing exists
+  if (existing.length === 0 || existingTotal <= 0) return false;
+
+  const scale = targetTotal / existingTotal;
+  let changed = false;
+
+  // Apply scaled weights with rounding and preserve remainder on last item
+  const baseWeights = existing.map(g => Math.floor((g.weightage * scale) * 100) / 100);
+  let summed = baseWeights.reduce((s, v) => s + v, 0);
+  let remainder = roundWeightage(targetTotal - summed);
+
+  for (let i = 0; i < existing.length; i++) {
+    const g = existing[i];
+    const newW = i === existing.length - 1 ? roundWeightage(baseWeights[i] + remainder) : baseWeights[i];
+    if (Number(g.weightage) !== newW) {
+      g.weightage = newW;
+      changed = true;
+    }
+  }
+
+  return changed;
+}
+
 function validateGoalWeightage(db, goal, excludeGoalId = null) {
   const employeeId = goal.employee_id;
   if (!employeeId) {
@@ -193,6 +220,13 @@ export function createGoal(goal) {
     ...goal,
     weightage
   };
+  // If adding this goal would push the employee >100, auto-rebalance existing goals to make room
+  const currentTotal = getGoalWeightageTotal(db.goals || [], goal.employee_id, null);
+  if (currentTotal + weightage > 100.0001) {
+    const remaining = roundWeightage(Math.max(0, 100 - weightage));
+    rebalanceEmployeeGoals(db.goals, goal.employee_id, null, remaining);
+  }
+
   db.goals.push(newGoal);
   saveDb(db);
   return newGoal;
@@ -271,7 +305,16 @@ export function updateGoal(id, updates) {
     const nextGoal = { ...db.goals[index], ...updates };
 
     if (Object.prototype.hasOwnProperty.call(updates, 'weightage')) {
-      nextGoal.weightage = validateGoalWeightage(db, nextGoal, id);
+      const validated = validateGoalWeightage(db, nextGoal, id);
+
+      // If increasing this goal would exceed 100, rebalance other goals to make room
+      const currentTotalExcluding = getGoalWeightageTotal(db.goals || [], nextGoal.employee_id, id);
+      if (currentTotalExcluding + validated > 100.0001) {
+        const remaining = roundWeightage(Math.max(0, 100 - validated));
+        rebalanceEmployeeGoals(db.goals, nextGoal.employee_id, id, remaining);
+      }
+
+      nextGoal.weightage = validated;
     }
 
     db.goals[index] = nextGoal;
