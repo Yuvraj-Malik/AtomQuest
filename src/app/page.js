@@ -32,7 +32,6 @@ export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [microsoftLoginError, setMicrosoftLoginError] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -99,26 +98,8 @@ export default function LoginPage() {
   return (
     <LandingPage
       isLoading={isLoading}
-      microsoftLoginError={microsoftLoginError}
       onLogin={({ email, password }) => {
         handleAuth(email, password);
-      }}
-      onEntraLogin={async () => {
-        setMicrosoftLoginError("");
-        setIsLoading(true);
-        try {
-          const redirectTo = typeof window !== 'undefined' ? window.location.origin : undefined;
-          const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'azure',
-            options: { redirectTo }
-          });
-
-          if (error) throw error;
-        } catch (error) {
-          setMicrosoftLoginError(error.message || 'Microsoft sign-in failed. Please try again.');
-          toast.error('Microsoft sign-in failed');
-          setIsLoading(false);
-        }
       }}
       onDemoLogin={(role) => {
         const creds = {

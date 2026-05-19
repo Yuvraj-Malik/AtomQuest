@@ -16,6 +16,7 @@ export default function ChatWindow() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [recentMessages, setRecentMessages] = useState([]);
+  const [showMobileChat, setShowMobileChat] = useState(false);
 
   const wsRef = useRef(null);
   const scrollRef = useRef(null);
@@ -364,6 +365,11 @@ export default function ChatWindow() {
     const currentMe = meRef.current;
     if (!currentMe) return;
     setPeer(p);
+    try {
+      if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+        setShowMobileChat(true);
+      }
+    } catch (e) {}
     
     try {
       const convId = buildDirectConversationId(currentMe, p);
@@ -417,9 +423,20 @@ export default function ChatWindow() {
   const activePeerProfile = profiles.find(p => p.id === peer);
 
   return (
-    <div style={{ height: '100%', width: '100%', display: 'flex', overflow: 'hidden', background: 'var(--bg)' }}>
+    <div style={{ height: '100%', width: '100%', display: 'flex', overflow: 'hidden', background: 'var(--bg)', position: 'relative' }}>
+      <style>{`
+        /* Mobile chat pane behavior */
+        .aq-chat-sidebar { width: 320px; min-width: 320px; transition: transform .2s ease; }
+        .aq-chat-pane { flex: 1; transition: transform .2s ease; }
+        @media (max-width: 768px) {
+          .aq-chat-sidebar { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; min-width: 0; z-index: 5; background: var(--surface); }
+          .aq-chat-pane { position: absolute; left: 100%; top: 0; bottom: 0; width: 100%; z-index: 10; }
+          .aq-chat-pane.open { left: 0; }
+          .aq-chat-sidebar.hidden { transform: translateX(-100%); }
+        }
+      `}</style>
       {/* Chats Sidebar */}
-      <div style={{ 
+      <div className={"aq-chat-sidebar" + (showMobileChat ? ' hidden' : '')} style={{ 
         width: 320, 
         minWidth: 320, 
         height: '100%', 
@@ -581,7 +598,7 @@ export default function ChatWindow() {
       </div>
 
       {/* Message Chat Pane */}
-      <div style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--bg)' }}>
+      <div className={"aq-chat-pane" + (showMobileChat ? ' open' : '')} style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--bg)' }}>
         {peer ? (
           <>
             {/* Header */}
@@ -617,6 +634,11 @@ export default function ChatWindow() {
                   {activePeerProfile?.designation || 'Teammate'} · Direct Messages
                 </div>
               </div>
+              {typeof window !== 'undefined' && window.innerWidth <= 768 && (
+                <button onClick={() => { setShowMobileChat(false); setPeer(null); }} style={{ marginLeft: 8, background: 'none', border: 'none', color: 'var(--text2)', cursor: 'pointer' }}>
+                  ← Back
+                </button>
+              )}
             </div>
 
             {/* Messages body */}

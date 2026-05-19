@@ -6,7 +6,7 @@ let dbPath = "";
 if (typeof window === 'undefined') {
   fs = require('fs');
   path = require('path');
-  dbPath = path.join(process.cwd(), 'database.json');
+  dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'database.json');
 }
 
 // Memory fallback to ensure absolute zero latency and fast concurrent operations
@@ -896,7 +896,13 @@ export function addAuditLog(actor, action, status) {
     action,
     status
   };
+  db.audit_logs = db.audit_logs || [];
   db.audit_logs.unshift(newLog); // newest first
   saveDb(db);
   return newLog;
+}
+
+export function getAuditLogs() {
+  const db = loadDb();
+  return db.audit_logs || [];
 }

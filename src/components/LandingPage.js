@@ -41,6 +41,27 @@ const styles = `
     position: absolute; inset: 0; width: 100%; height: 100%;
     pointer-events: none; opacity: .03;
   }
+
+  /* layout helpers for responsiveness */
+  .aq-main-grid { display: grid; grid-template-columns: 1fr 480px; min-height: calc(100vh - 60px); }
+  .aq-hero-left { padding: 80px 60px 60px; }
+  .aq-signin-right { padding: 60px 48px; }
+
+  @media (max-width: 1024px) {
+    .aq-main-grid { grid-template-columns: 1fr 420px !important; }
+    .aq-hero-left { padding: 60px 40px 40px !important; }
+    .aq-signin-right { padding: 48px 36px !important; }
+  }
+
+  @media (max-width: 768px) {
+    .aq-main-grid { grid-template-columns: 1fr !important; }
+    .aq-hero-left { padding: 40px 20px 20px !important; border-right: none !important; }
+    .aq-signin-right { padding: 30px 20px !important; }
+    nav { padding: 0 16px !important; }
+    .aq-hero-left h1 { font-size: 28px !important; }
+    .aq-hero-left p { max-width: 100% !important; }
+    .aq-grid-svg { display: none !important; }
+  }
 `;
 
 const IconDiamond = ({ size = 16, color = "#080808" }) => (
@@ -129,7 +150,7 @@ const demoRoles = [
   { label: "Admin",    badge: "Demo", iconBg: "rgba(52,211,153,.12)",  badgeBg: "#051a10", badgeColor: "#34d399", icon: <IconShield color="#34d399" /> },
 ];
 
-export default function LandingPage({ onLogin, onDemoLogin, onEntraLogin, isLoading, microsoftLoginError = "" }) {
+export default function LandingPage({ onLogin, onDemoLogin, isLoading }) {
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
 
@@ -172,10 +193,10 @@ export default function LandingPage({ onLogin, onDemoLogin, onEntraLogin, isLoad
         </nav>
 
         {/* MAIN GRID */}
-        <div style={{flex:1,width:"100%",display:"grid",gridTemplateColumns:"1fr 480px",minHeight:"calc(100vh - 60px)"}}>
+        <div className="aq-main-grid" style={{flex:1,width:"100%"}}>
 
           {/* HERO LEFT */}
-          <div style={{padding:"80px 60px 60px",display:"flex",flexDirection:"column",justifyContent:"space-between",borderRight:"1px solid #16161e",position:"relative",overflow:"hidden"}}>
+          <div className="aq-hero-left" style={{padding:"80px 60px 60px",display:"flex",flexDirection:"column",justifyContent:"space-between",borderRight:"1px solid #16161e",position:"relative",overflow:"hidden"}}>
 
             {/* grid overlay */}
             <svg className="aq-grid-svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
@@ -236,7 +257,7 @@ export default function LandingPage({ onLogin, onDemoLogin, onEntraLogin, isLoad
           </div>
 
           {/* SIGN IN RIGHT */}
-          <div style={{background:"#0d0d12",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 48px",position:"relative",overflow:"hidden"}}>
+          <div className="aq-signin-right" style={{background:"#0d0d12",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 48px",position:"relative",overflow:"hidden"}}>
 
             {/* top accent line */}
             <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,#f59e0b,transparent)"}}/>
@@ -282,36 +303,7 @@ export default function LandingPage({ onLogin, onDemoLogin, onEntraLogin, isLoad
               </button>
             </form>
 
-            <button
-              type="button"
-              onClick={() => onEntraLogin?.()}
-              disabled={isLoading}
-              className="aq-anim-7 aq-demo-btn"
-              style={{width:"100%",padding:13,fontSize:13,fontWeight:600,background:"#0a0a0f",color:"#e4e4e7",border:"1px solid #1e1e28",borderRadius:9,cursor:isLoading ? "not-allowed" : "pointer",fontFamily:"'Syne',sans-serif",letterSpacing:"-.01em",marginTop:12,display:"flex",alignItems:"center",justifyContent:"center",gap:10,transition:"opacity .15s,transform .1s"}}
-            >
-              <span style={{display:"inline-flex",width:18,height:18,borderRadius:4,background:"linear-gradient(135deg,#2b579a,#5b9bd5)",alignItems:"center",justifyContent:"center",fontSize:11,color:"#fff",fontWeight:700}}>M</span>
-              Sign in with Microsoft
-            </button>
-
-            {microsoftLoginError && (
-              <div
-                className="aq-anim-7"
-                role="alert"
-                style={{
-                  marginTop: 12,
-                  padding: '12px 14px',
-                  borderRadius: 10,
-                  border: '1px solid rgba(224, 92, 92, 0.22)',
-                  background: 'rgba(224, 92, 92, 0.08)',
-                  color: '#f3b4b4',
-                  fontSize: 12,
-                  lineHeight: 1.5,
-                }}
-              >
-                <div style={{fontWeight: 600, marginBottom: 2}}>Microsoft sign-in failed</div>
-                <div>{microsoftLoginError}</div>
-              </div>
-            )}
+            {/* Microsoft sign-in removed per request */}
 
             {/* Divider */}
             <div className="aq-anim-8" style={{display:"flex",alignItems:"center",gap:12,margin:"24px 0 20px"}}>

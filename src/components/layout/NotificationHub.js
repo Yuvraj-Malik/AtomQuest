@@ -128,11 +128,113 @@ export default function NotificationHub() {
   const unreadCount = filteredNotifs.filter(n => !n.is_read).length;
 
   return (
-    <div style={{ position: "fixed", bottom: "20px", right: "20px", zIndex: 999999, fontFamily: "var(--font-sans)" }}>
+    <>
+      <style>{`
+        /* Notification Hub wrapper */
+        .aq-notif-hub {
+          position: fixed;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          top: 0;
+          z-index: 999999;
+          font-family: var(--font-sans);
+          pointer-events: none;
+        }
+
+        .aq-notif-launcher {
+          pointer-events: auto;
+          position: fixed !important;
+          bottom: 20px !important;
+          right: 20px !important;
+          transition: all .2s ease;
+          z-index: 999999;
+        }
+
+        .aq-notif-drawer {
+          pointer-events: auto;
+          position: fixed !important;
+          bottom: 80px !important;
+          right: 20px !important;
+          transition: all .2s ease;
+          z-index: 999999;
+        }
+
+        @media (max-width: 768px) {
+          .aq-notif-launcher {
+            right: 12px !important;
+            bottom: 16px !important;
+            padding: 10px 14px !important;
+            font-size: 11px !important;
+          }
+
+          .aq-notif-drawer {
+            left: 12px !important;
+            right: 12px !important;
+            bottom: 80px !important;
+            width: auto !important;
+            max-width: calc(100% - 24px) !important;
+            height: 70vh !important;
+            border-radius: 12px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          /* Mobile Launcher: vertical tab on the right edge */
+          .aq-notif-launcher {
+            position: fixed !important;
+            right: 0 !important;
+            top: 50% !important;
+            bottom: auto !important;
+            transform: translateY(-50%) !important;
+            width: 48px !important;
+            height: 80px !important;
+            padding: 6px 4px !important;
+            border-radius: 12px 0 0 12px !important;
+            display: inline-flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.38) !important;
+            background: linear-gradient(135deg, #c8f060 0%, #a2d216 100%) !important;
+          }
+
+          .aq-notif-launcher .aq-tab-label {
+            display: block !important;
+            font-size: 9px !important;
+            color: #050505 !important;
+            font-weight: 700 !important;
+            writing-mode: vertical-rl !important;
+            text-orientation: mixed !important;
+            transform: rotate(180deg) !important;
+            white-space: nowrap !important;
+          }
+
+          /* Drawer becomes a full height panel sliding in from the right */
+          .aq-notif-drawer {
+            position: fixed !important;
+            right: 0 !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            left: auto !important;
+            width: min(92vw, 420px) !important;
+            max-width: 420px !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            box-shadow: -8px 0 48px rgba(0,0,0,0.6) !important;
+            transform: none !important;
+            overflow: auto !important;
+          }
+        }
+      `}</style>
+
+      <div className="aq-notif-hub">
       {/* Floating Launcher Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
+          className="aq-notif-launcher hover:scale-105"
           style={{
             background: "linear-gradient(135deg, #c8f060 0%, #a2d216 100%)",
             color: "#050505",
@@ -148,10 +250,9 @@ export default function NotificationHub() {
             cursor: "pointer",
             transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
-          className="hover:scale-105"
         >
-          <Bell size={16} className="animate-bounce" />
-          Integration Sim
+            <Bell size={16} className="animate-bounce" />
+            <span className="aq-tab-label">Integration Sim</span>
           {notifications.length > 0 && (
             <span style={{
               background: "#ff4d4f",
@@ -169,7 +270,7 @@ export default function NotificationHub() {
 
       {/* Main Drawer Simulator */}
       {isOpen && (
-        <div style={{
+        <div className="aq-notif-drawer" style={{
           width: "480px",
           height: "600px",
           backgroundColor: "#0d0d0d",
@@ -604,6 +705,7 @@ export default function NotificationHub() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Bell, Check, X, Clock } from "lucide-react";
+import { Bell, Check, X, Clock, Menu } from "lucide-react";
 import { useTheme } from 'next-themes';
 
 export default function TopBar({ title, subtitle, primaryAction, secondaryAction }) {
@@ -83,6 +83,13 @@ export default function TopBar({ title, subtitle, primaryAction, secondaryAction
 
   return (
     <header className="topbar">
+      <button 
+        className="tb-burger-btn" 
+        onClick={() => window.dispatchEvent(new CustomEvent('toggle-sidebar'))}
+        aria-label="Toggle Navigation Menu"
+      >
+        <Menu size={18} />
+      </button>
       <div>
         <div className="topbar-title">{title}</div>
         <div className="topbar-sub">{subtitle}</div>

@@ -24,7 +24,8 @@ import {
   Save,
   Moon,
   Sun,
-  Shield
+  Shield,
+  Menu
 } from "lucide-react";
 import NotificationHub from "./NotificationHub";
 
@@ -44,6 +45,27 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
   const [editLocation, setEditLocation] = useState("");
   const [editBio, setEditBio] = useState("");
   const [saving, setSaving] = useState(false);
+
+  // Mobile navigation drawer toggle states
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handleToggle = () => setIsMobileOpen(prev => !prev);
+    const handleClose = () => setIsMobileOpen(false);
+    
+    window.addEventListener('toggle-sidebar', handleToggle);
+    window.addEventListener('close-sidebar', handleClose);
+    
+    return () => {
+      window.removeEventListener('toggle-sidebar', handleToggle);
+      window.removeEventListener('close-sidebar', handleClose);
+    };
+  }, []);
+
+  // Auto-close drawer when URL pathname changes (navigating)
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
 
   // Sync form state when user changes
   useEffect(() => {
@@ -188,7 +210,24 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
 
   return (
     <>
-      <aside className={cn("sidebar", isCollapsed && "collapsed")}>
+      {/* Backdrop overlay for mobile */}
+      {isMobileOpen && (
+        <div 
+          className="sidebar-overlay show" 
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Global floating hamburger button for mobile when TopBar is missing on page */}
+      <button 
+        className="global-mobile-burger"
+        onClick={() => setIsMobileOpen(true)}
+        aria-label="Open Navigation Menu"
+      >
+        <Menu size={18} />
+      </button>
+
+      <aside className={cn("sidebar", isCollapsed && "collapsed", isMobileOpen && "mobile-open")}>
       <div className="sidebar-top">
         <div className="wordmark">
           <div className="wm-icon">
@@ -208,6 +247,14 @@ export default function Sidebar({ role, user, userName, userInitials, refreshPro
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {isCollapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
+          </button>
+          
+          <button 
+            onClick={() => setIsMobileOpen(false)}
+            className="sidebar-mobile-close-btn"
+            title="Close sidebar"
+          >
+            <X size={16} />
           </button>
         </div>
       </div>

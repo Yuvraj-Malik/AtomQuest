@@ -119,7 +119,7 @@ export async function GET(request) {
       return new NextResponse(html, {
         headers: {
           'Content-Type': 'application/vnd.ms-excel; charset=utf-8',
-          'Content-Disposition': `attachment; filename="${report}-report.xls"`
+          'Content-Disposition': `attachment; filename="${report.type}-report.xls"`
         }
       });
     }
@@ -128,7 +128,7 @@ export async function GET(request) {
     return new NextResponse(csv, {
       headers: {
         'Content-Type': 'text/csv; charset=utf-8',
-        'Content-Disposition': `attachment; filename="${report}-report.csv"`
+        'Content-Disposition': `attachment; filename="${report.type}-report.csv"`
       }
     });
   } catch (error) {
