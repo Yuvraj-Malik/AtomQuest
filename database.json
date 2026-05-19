@@ -733,8 +733,8 @@
   ],
   "escalations": [
     {
-      "id": "escalation-1779155358144-sq7nrw",
-      "created_at": "2026-05-19T01:49:18.144Z",
+      "id": "escalation-1779156261797-puozd9",
+      "created_at": "2026-05-19T02:04:21.797Z",
       "resolved": false,
       "source": "rule",
       "rule_key": "goal-sheet-overdue:employee-uuid-5555:cycle-q1-26-27",
