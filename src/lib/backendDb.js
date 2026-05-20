@@ -2,11 +2,17 @@
 let fs = null;
 let path = null;
 let dbPath = "";
+let initialData = null;
 
 if (typeof window === 'undefined') {
   fs = require('fs');
   path = require('path');
   dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'database.json');
+  try {
+    initialData = require('../../database.json');
+  } catch (err) {
+    console.error("Failed to load initial database.json via require:", err);
+  }
 }
 
 // Memory fallback to ensure absolute zero latency and fast concurrent operations
@@ -470,7 +476,7 @@ function loadDb() {
   }
   
   // High-fidelity fallback structure if database.json doesn't exist yet
-  dbCache = {
+  const fallback = initialData || {
     profiles: [],
     goals: [],
     escalations: [],
@@ -487,6 +493,7 @@ function loadDb() {
       chain_intervals_days: 5
     }
   };
+  dbCache = { ...fallback };
   return dbCache;
 }
 

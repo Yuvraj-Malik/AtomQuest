@@ -3,10 +3,16 @@ const fs = typeof window === 'undefined' ? require('fs') : null;
 const path = typeof window === 'undefined' ? require('path') : null;
 let dbPath = '';
 let jsonPath = '';
+let initialChat = null;
 
 if (typeof window === 'undefined') {
   dbPath = path.join(process.cwd(), 'chat.sqlite');
   jsonPath = path.join(process.cwd(), 'chat.json');
+  try {
+    initialChat = require('../../chat.json');
+  } catch (err) {
+    console.error("Failed to load initial chat.json via require:", err);
+  }
 }
 
 let sqlite = null;
@@ -29,17 +35,27 @@ function now() {
 function ensureFallback() {
   if (fallback) return fallback;
   if (!fs) return null;
-  if (!fs.existsSync(jsonPath)) {
-    const initial = { conversations: [], messages: [], keys: [] };
-    fs.writeFileSync(jsonPath, JSON.stringify(initial, null, 2), 'utf8');
+  try {
+    if (!fs.existsSync(jsonPath)) {
+      const initial = initialChat || { conversations: [], messages: [], keys: [] };
+      fs.writeFileSync(jsonPath, JSON.stringify(initial, null, 2), 'utf8');
+    }
+    fallback = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    return fallback;
+  } catch (error) {
+    console.error("Error handling chat.json filesystem operation, falling back to in-memory initialChat:", error);
+    fallback = initialChat || { conversations: [], messages: [], keys: [] };
+    return fallback;
   }
-  fallback = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-  return fallback;
 }
 
 function persistFallback() {
   if (!fs || !fallback) return;
-  fs.writeFileSync(jsonPath, JSON.stringify(fallback, null, 2), 'utf8');
+  try {
+    fs.writeFileSync(jsonPath, JSON.stringify(fallback, null, 2), 'utf8');
+  } catch (error) {
+    console.error("Error writing fallback to chat.json (probably read-only filesystem):", error);
+  }
 }
 
 function tryInitSqlite() {
