@@ -7,7 +7,7 @@ Designed for high-performance enterprises, the portal guarantees complete alignm
 ---
 
 ## 🚀 Live Hosted Demo URL
-👉 **[INSERT YOUR LIVE HOSTED URL HERE (e.g., https://atomquest-portal.vercel.app)]**
+👉 **[https://atomquest-portal-beige.vercel.app/](https://atomquest-portal-beige.vercel.app/)**
 
 ---
 
@@ -114,13 +114,33 @@ graph TD
 
 ## 🔐 User Journeys & Login Credentials
 
-Immediate evaluation is possible using the **one-click Demo Login** buttons on the landing page or by logging in with the credentials below:
+You can test the entire workflow hierarchy (such as managers signing off on direct reports, or admins viewing cross-departmental compliance logs) using these pre-seeded test accounts. Sign in using the **one-click Demo Login** buttons on the landing page for quick access, or manually type the credentials below:
 
-| Role | Test Username / Email | Password | Allowed Journeys & Actions |
-| :--- | :--- | :--- | :--- |
-| **🔑 System Admin** | `admin@demo.com` | `admin@123` | Control evaluation cycles, override active periods, review organization-wide compliance issues, and export CSV/Excel sheets. |
-| **👔 Line Manager** | `manager@demo.com` | `manager@123` | Review direct reports' goal sheets, approve/send goals back for drafts, comment on accomplishments, and submit quarterly check-in reviews. |
-| **🧑‍💻 Employee** | `employee@demo.com` | `employee@123` | Define quarterly goals, allocate weightages, submit goals for approval, view real-time feedback, and self-report performance accomplishments. |
+### 💼 1. Enterprise Stakeholders (Core Workflow)
+
+| Name | Role | Email Address | Password | Focus & Allowed Journeys |
+| :--- | :--- | :--- | :--- | :--- |
+| **Admin Operations** | `🔑 Admin` | `admin@demo.com` | `admin@123` | Set review cycles, configure timelines, override escalation rules, inspect audit trail logs, and export sheets. |
+| **Rahul Sharma** | `👔 Manager` | `manager@demo.com` | `manager@123` | Director of Product. Approves, locks, or returns goal sheets, and submits quarterly check-ins for the Product team. |
+| **Shreya Mehta** | `👔 Manager` | `shreya@demo.com` | `manager@123` | Director of Engineering. Reviews, comments, and submits check-ins for the entire Engineering team. |
+| **Aryan Kumar** | `🧑‍💻 Employee` | `employee@demo.com` | `employee@123` | Product Designer (reports to Rahul). Sets checkout goals, requests feedback, logs Q1 actual progress, and views feedback. |
+
+### 🛠️ 2. Product Team (Reports to Rahul Sharma)
+
+| Name | Role | Email Address | Password | Designation |
+| :--- | :--- | :--- | :--- | :--- |
+| **Aryan Kumar** | `🧑‍💻 Employee` | `employee@demo.com` | `employee@123` | Product Designer |
+| **Nisha Pillai** | `🧑‍💻 Employee` | `nisha@demo.com` | `employee@123` | Product Specialist |
+| **Vikram Singh** | `🧑‍💻 Employee` | `vikram@demo.com` | `employee@123` | Product Analyst |
+
+### 💻 3. Engineering Team (Reports to Shreya Mehta)
+
+| Name | Role | Email Address | Password | Designation |
+| :--- | :--- | :--- | :--- | :--- |
+| **Meera Singh** | `🧑‍💻 Employee` | `meera@demo.com` | `employee@123` | Frontend Developer |
+| **Aditya Rao** | `🧑‍💻 Employee` | `aditya@demo.com` | `employee@123` | Backend Developer |
+| **Rohan Das** | `🧑‍💻 Employee` | `rohan@demo.com` | `employee@123` | DevOps Engineer |
+| **Kirti Sen** | `🧑‍💻 Employee` | `kirti@demo.com` | `employee@123` | QA Engineer |
 
 ---
 

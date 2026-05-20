@@ -5,12 +5,12 @@ This document contains the submission details, system architecture, and credenti
 ---
 
 ## 1. Live Hosted Demo URL
-👉 **[INSERT YOUR LIVE HOSTED URL HERE (e.g., https://atomquest-portal.vercel.app)]**
+👉 **[https://atomquest-portal-beige.vercel.app/](https://atomquest-portal-beige.vercel.app/)**
 
 ---
 
 ## 2. Source Code Repository
-👉 **[INSERT YOUR GITHUB URL HERE (e.g., https://github.com/Yuvraj-Malik/atomquest-portal)]**
+👉 **[https://github.com/Yuvraj-Malik/atomquest-portal](https://github.com/Yuvraj-Malik/atomquest-portal)**
 
 ---
 
@@ -64,10 +64,31 @@ graph TD
 ---
 
 ## 4. User Journeys & Login Credentials
-To make evaluation as fast as possible, you can switch between roles immediately using either **one-click Demo Login buttons** on the landing page, or typing these credentials:
 
-| Role | Test Username / Email | Password | Allowed Journeys & Actions |
-| :--- | :--- | :--- | :--- |
-| **🔑 System Admin** | `admin@demo.com` | `admin@123` | Control evaluation cycles, override active periods, review organization-wide escalations, audit historical activity logs, and export raw CSV/Excel sheets. |
-| **👔 Line Manager** | `manager@demo.com` | `manager@123` | Review direct reports' goal sheets, approve/send goals back for draft reviews, comment on employee accomplishments, and submit quarterly check-in reviews. |
-| **🧑‍💻 Employee** | `employee@demo.com` | `employee@123` | Define quarterly goals, allocate weightages, submit goals for approval, view real-time feedback, and self-report performance accomplishments. |
+To make evaluation as fast as possible, you can switch between roles immediately using either **one-click Demo Login buttons** on the landing page, or typing these pre-seeded credentials manually:
+
+### 💼 Core Stakeholders & Workflows
+
+| Name | Role | Email Address | Password | Focus & Allowed Journeys |
+| :--- | :--- | :--- | :--- | :--- |
+| **Admin Operations** | `🔑 Admin` | `admin@demo.com` | `admin@123` | Cycle controls, deadline overrides, compliance rules, security audits, and raw exports. |
+| **Rahul Sharma** | `👔 Manager` | `manager@demo.com` | `manager@123` | Director of Product. Approves, locks, or returns goal sheets for direct reports, and submits check-ins. |
+| **Shreya Mehta** | `👔 Manager` | `shreya@demo.com` | `manager@123` | Director of Engineering. Audits goal sheets and signs off on engineering check-ins. |
+| **Aryan Kumar** | `🧑‍💻 Employee` | `employee@demo.com` | `employee@123` | Product Designer (reports to Rahul). Creates goals, reports accomplishments, and views feedback. |
+
+### 🛠️ Product Team (Reports to Rahul Sharma)
+
+| Name | Role | Email Address | Password | Designation |
+| :--- | :--- | :--- | :--- | :--- |
+| **Aryan Kumar** | `🧑‍💻 Employee` | `employee@demo.com` | `employee@123` | Product Designer |
+| **Nisha Pillai** | `🧑‍💻 Employee` | `nisha@demo.com` | `employee@123` | Product Specialist |
+| **Vikram Singh** | `🧑‍💻 Employee` | `vikram@demo.com` | `employee@123` | Product Analyst |
+
+### 💻 Engineering Team (Reports to Shreya Mehta)
+
+| Name | Role | Email Address | Password | Designation |
+| :--- | :--- | :--- | :--- | :--- |
+| **Meera Singh** | `🧑‍💻 Employee` | `meera@demo.com` | `employee@123` | Frontend Developer |
+| **Aditya Rao** | `🧑‍💻 Employee` | `aditya@demo.com` | `employee@123` | Backend Developer |
+| **Rohan Das** | `🧑‍💻 Employee` | `rohan@demo.com` | `employee@123` | DevOps Engineer |
+| **Kirti Sen** | `🧑‍💻 Employee` | `kirti@demo.com` | `employee@123` | QA Engineer |
